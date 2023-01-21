@@ -12,6 +12,7 @@ struct DonorTrackApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(\.managedObjectContext, DonationsProvider.shared.viewContext)
         }
     }
 }

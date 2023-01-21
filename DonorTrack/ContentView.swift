@@ -8,19 +8,31 @@
 import SwiftUI
 
 struct ContentView: View {
+    var provider = DonationsProvider.shared
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        TabView {
+            NewDonationView(vm: .init(provider: provider))
+                .tabItem {
+                    Image(systemName: "plus.circle.fill")
+                    Text("New")
+                }
+            
+            DonationsListView(vm: .init(provider: provider))
+                .tabItem {
+                    Image(systemName: "list.bullet.circle.fill")
+                    Text("Donations")
+                }
         }
-        .padding()
+
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        let preview = DonationsProvider.shared
+        ContentView(provider: preview)
+            .environment(\.managedObjectContext, preview.viewContext)
+            .onAppear { DonationEntity.makePreview(count: 10, in: preview.viewContext) }
     }
 }

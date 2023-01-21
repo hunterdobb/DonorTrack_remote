@@ -11,6 +11,28 @@
 		B51C4BBE2972032800FEEF50 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BBD2972032800FEEF50 /* ContentView.swift */; };
 		B51C4BC02972032900FEEF50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B51C4BBF2972032900FEEF50 /* Assets.xcassets */; };
 		B51C4BC32972032900FEEF50 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B51C4BC22972032900FEEF50 /* Preview Assets.xcassets */; };
+		B51C4BCA2972049800FEEF50 /* NewDonationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BC92972049800FEEF50 /* NewDonationView.swift */; };
+		B51C4BCC297204B500FEEF50 /* DonationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BCB297204B500FEEF50 /* DonationsListView.swift */; };
+		B51C4BD22972056900FEEF50 /* DonationsDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BD02972056900FEEF50 /* DonationsDataModel.xcdatamodeld */; };
+		B51C4BD42972090900FEEF50 /* DonationEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BD32972090900FEEF50 /* DonationEntity.swift */; };
+		B51C4BD829720BEC00FEEF50 /* DonationsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BD729720BEC00FEEF50 /* DonationsProvider.swift */; };
+		B51C4BDA297212F600FEEF50 /* DonationRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BD9297212F600FEEF50 /* DonationRowView.swift */; };
+		B51C4BDC297215E700FEEF50 /* DonationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BDB297215E700FEEF50 /* DonationDetailView.swift */; };
+		B51C4BDE2972F6E500FEEF50 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BDD2972F6E500FEEF50 /* TestView.swift */; };
+		B51C4BE12972FD0B00FEEF50 /* View+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BE02972FD0B00FEEF50 /* View+Ext.swift */; };
+		B51C4BE32973008500FEEF50 /* ValueField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BE22973008500FEEF50 /* ValueField.swift */; };
+		B51C4BE5297378BD00FEEF50 /* CompensationField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BE4297378BD00FEEF50 /* CompensationField.swift */; };
+		B51C4BEA29743E9A00FEEF50 /* Binding+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BE929743E9A00FEEF50 /* Binding+Ext.swift */; };
+		B51C4BEC2974BB6000FEEF50 /* NewDonationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BEB2974BB6000FEEF50 /* NewDonationViewModel.swift */; };
+		B51C4BEE29759DE100FEEF50 /* KeyboardReadable+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BED29759DE100FEEF50 /* KeyboardReadable+Ext.swift */; };
+		B51C4BF02975A45400FEEF50 /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BEF2975A45400FEEF50 /* Date+Ext.swift */; };
+		B51C4BF22975D67D00FEEF50 /* CapsuleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BF12975D67D00FEEF50 /* CapsuleButton.swift */; };
+		B51C4BF52975EA4900FEEF50 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BF42975EA4900FEEF50 /* HapticManager.swift */; };
+		B51C4BF92976EDD200FEEF50 /* DonationsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BF82976EDD200FEEF50 /* DonationsListViewModel.swift */; };
+		B51C4BFD297895CB00FEEF50 /* AdaptToKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BFC297895CB00FEEF50 /* AdaptToKeyboard.swift */; };
+		B51C4C002978C71D00FEEF50 /* EditDonationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BFF2978C71D00FEEF50 /* EditDonationView.swift */; };
+		B51C4C032978CAA000FEEF50 /* EditDonationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4C022978CAA000FEEF50 /* EditDonationViewModel.swift */; };
+		B573232E297B384B003D0C3E /* DataField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573232D297B384B003D0C3E /* DataField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +41,29 @@
 		B51C4BBD2972032800FEEF50 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B51C4BBF2972032900FEEF50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B51C4BC22972032900FEEF50 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B51C4BC92972049800FEEF50 /* NewDonationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDonationView.swift; sourceTree = "<group>"; };
+		B51C4BCB297204B500FEEF50 /* DonationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationsListView.swift; sourceTree = "<group>"; };
+		B51C4BD12972056900FEEF50 /* DonationsDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DonationsDataModel.xcdatamodel; sourceTree = "<group>"; };
+		B51C4BD32972090900FEEF50 /* DonationEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationEntity.swift; sourceTree = "<group>"; };
+		B51C4BD729720BEC00FEEF50 /* DonationsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationsProvider.swift; sourceTree = "<group>"; };
+		B51C4BD9297212F600FEEF50 /* DonationRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationRowView.swift; sourceTree = "<group>"; };
+		B51C4BDB297215E700FEEF50 /* DonationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationDetailView.swift; sourceTree = "<group>"; };
+		B51C4BDD2972F6E500FEEF50 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		B51C4BE02972FD0B00FEEF50 /* View+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Ext.swift"; sourceTree = "<group>"; };
+		B51C4BE22973008500FEEF50 /* ValueField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueField.swift; sourceTree = "<group>"; };
+		B51C4BE4297378BD00FEEF50 /* CompensationField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompensationField.swift; sourceTree = "<group>"; };
+		B51C4BE929743E9A00FEEF50 /* Binding+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Ext.swift"; sourceTree = "<group>"; };
+		B51C4BEB2974BB6000FEEF50 /* NewDonationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDonationViewModel.swift; sourceTree = "<group>"; };
+		B51C4BED29759DE100FEEF50 /* KeyboardReadable+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyboardReadable+Ext.swift"; sourceTree = "<group>"; };
+		B51C4BEF2975A45400FEEF50 /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
+		B51C4BF12975D67D00FEEF50 /* CapsuleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleButton.swift; sourceTree = "<group>"; };
+		B51C4BF42975EA4900FEEF50 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		B51C4BF6297605FC00FEEF50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B51C4BF82976EDD200FEEF50 /* DonationsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationsListViewModel.swift; sourceTree = "<group>"; };
+		B51C4BFC297895CB00FEEF50 /* AdaptToKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptToKeyboard.swift; sourceTree = "<group>"; };
+		B51C4BFF2978C71D00FEEF50 /* EditDonationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDonationView.swift; sourceTree = "<group>"; };
+		B51C4C022978CAA000FEEF50 /* EditDonationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDonationViewModel.swift; sourceTree = "<group>"; };
+		B573232D297B384B003D0C3E /* DataField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +96,15 @@
 		B51C4BBA2972032800FEEF50 /* DonorTrack */ = {
 			isa = PBXGroup;
 			children = (
+				B51C4BF6297605FC00FEEF50 /* Info.plist */,
 				B51C4BBB2972032800FEEF50 /* DonorTrackApp.swift */,
 				B51C4BBD2972032800FEEF50 /* ContentView.swift */,
+				B51C4BF32975EA3200FEEF50 /* Utilities */,
+				B51C4BDF2972FCD500FEEF50 /* Extensions */,
+				B51C4BD629720BC900FEEF50 /* Provider */,
+				B51C4BD52972095500FEEF50 /* Model */,
+				B51C4BE62973839E00FEEF50 /* Core */,
+				B51C4BDD2972F6E500FEEF50 /* TestView.swift */,
 				B51C4BBF2972032900FEEF50 /* Assets.xcassets */,
 				B51C4BC12972032900FEEF50 /* Preview Content */,
 			);
@@ -65,6 +117,102 @@
 				B51C4BC22972032900FEEF50 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B51C4BD52972095500FEEF50 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B51C4BD32972090900FEEF50 /* DonationEntity.swift */,
+				B51C4BD02972056900FEEF50 /* DonationsDataModel.xcdatamodeld */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B51C4BD629720BC900FEEF50 /* Provider */ = {
+			isa = PBXGroup;
+			children = (
+				B51C4BD729720BEC00FEEF50 /* DonationsProvider.swift */,
+			);
+			path = Provider;
+			sourceTree = "<group>";
+		};
+		B51C4BDF2972FCD500FEEF50 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B51C4BE02972FD0B00FEEF50 /* View+Ext.swift */,
+				B51C4BE929743E9A00FEEF50 /* Binding+Ext.swift */,
+				B51C4BED29759DE100FEEF50 /* KeyboardReadable+Ext.swift */,
+				B51C4BEF2975A45400FEEF50 /* Date+Ext.swift */,
+				B51C4BFC297895CB00FEEF50 /* AdaptToKeyboard.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B51C4BE62973839E00FEEF50 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				B51C4C012978CA4A00FEEF50 /* DonationDetail */,
+				B51C4BFE2978C70700FEEF50 /* EditDonation */,
+				B51C4BE82973842B00FEEF50 /* NewDonation */,
+				B51C4BF729761F2A00FEEF50 /* DonationHistory */,
+				B51C4BE72973841800FEEF50 /* Components */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		B51C4BE72973841800FEEF50 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B51C4BE22973008500FEEF50 /* ValueField.swift */,
+				B51C4BE4297378BD00FEEF50 /* CompensationField.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		B51C4BE82973842B00FEEF50 /* NewDonation */ = {
+			isa = PBXGroup;
+			children = (
+				B51C4BC92972049800FEEF50 /* NewDonationView.swift */,
+				B51C4BEB2974BB6000FEEF50 /* NewDonationViewModel.swift */,
+			);
+			path = NewDonation;
+			sourceTree = "<group>";
+		};
+		B51C4BF32975EA3200FEEF50 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				B51C4BF12975D67D00FEEF50 /* CapsuleButton.swift */,
+				B51C4BF42975EA4900FEEF50 /* HapticManager.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		B51C4BF729761F2A00FEEF50 /* DonationHistory */ = {
+			isa = PBXGroup;
+			children = (
+				B51C4BCB297204B500FEEF50 /* DonationsListView.swift */,
+				B51C4BF82976EDD200FEEF50 /* DonationsListViewModel.swift */,
+				B51C4BD9297212F600FEEF50 /* DonationRowView.swift */,
+			);
+			path = DonationHistory;
+			sourceTree = "<group>";
+		};
+		B51C4BFE2978C70700FEEF50 /* EditDonation */ = {
+			isa = PBXGroup;
+			children = (
+				B51C4BFF2978C71D00FEEF50 /* EditDonationView.swift */,
+				B51C4C022978CAA000FEEF50 /* EditDonationViewModel.swift */,
+				B573232D297B384B003D0C3E /* DataField.swift */,
+			);
+			path = EditDonation;
+			sourceTree = "<group>";
+		};
+		B51C4C012978CA4A00FEEF50 /* DonationDetail */ = {
+			isa = PBXGroup;
+			children = (
+				B51C4BDB297215E700FEEF50 /* DonationDetailView.swift */,
+			);
+			path = DonationDetail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,8 +285,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B51C4C032978CAA000FEEF50 /* EditDonationViewModel.swift in Sources */,
+				B51C4BFD297895CB00FEEF50 /* AdaptToKeyboard.swift in Sources */,
+				B51C4BCC297204B500FEEF50 /* DonationsListView.swift in Sources */,
+				B51C4BF22975D67D00FEEF50 /* CapsuleButton.swift in Sources */,
 				B51C4BBE2972032800FEEF50 /* ContentView.swift in Sources */,
+				B51C4BF02975A45400FEEF50 /* Date+Ext.swift in Sources */,
+				B51C4BEE29759DE100FEEF50 /* KeyboardReadable+Ext.swift in Sources */,
+				B51C4BD829720BEC00FEEF50 /* DonationsProvider.swift in Sources */,
+				B573232E297B384B003D0C3E /* DataField.swift in Sources */,
+				B51C4BF92976EDD200FEEF50 /* DonationsListViewModel.swift in Sources */,
+				B51C4BF52975EA4900FEEF50 /* HapticManager.swift in Sources */,
+				B51C4BDC297215E700FEEF50 /* DonationDetailView.swift in Sources */,
+				B51C4BE32973008500FEEF50 /* ValueField.swift in Sources */,
+				B51C4BCA2972049800FEEF50 /* NewDonationView.swift in Sources */,
+				B51C4BD42972090900FEEF50 /* DonationEntity.swift in Sources */,
+				B51C4BDE2972F6E500FEEF50 /* TestView.swift in Sources */,
+				B51C4BEC2974BB6000FEEF50 /* NewDonationViewModel.swift in Sources */,
+				B51C4BE12972FD0B00FEEF50 /* View+Ext.swift in Sources */,
+				B51C4BEA29743E9A00FEEF50 /* Binding+Ext.swift in Sources */,
+				B51C4BE5297378BD00FEEF50 /* CompensationField.swift in Sources */,
+				B51C4BD22972056900FEEF50 /* DonationsDataModel.xcdatamodeld in Sources */,
 				B51C4BBC2972032800FEEF50 /* DonorTrackApp.swift in Sources */,
+				B51C4C002978C71D00FEEF50 /* EditDonationView.swift in Sources */,
+				B51C4BDA297212F600FEEF50 /* DonationRowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,11 +440,13 @@
 				DEVELOPMENT_TEAM = 5M7L7W2WHX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = DonorTrack/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Donor Track";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -299,11 +471,13 @@
 				DEVELOPMENT_TEAM = 5M7L7W2WHX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = DonorTrack/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Donor Track";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -339,6 +513,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		B51C4BD02972056900FEEF50 /* DonationsDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B51C4BD12972056900FEEF50 /* DonationsDataModel.xcdatamodel */,
+			);
+			currentVersion = B51C4BD12972056900FEEF50 /* DonationsDataModel.xcdatamodel */;
+			path = DonationsDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = B51C4BB02972032800FEEF50 /* Project object */;
 }
