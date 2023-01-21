@@ -94,7 +94,7 @@ extension DonationEntity {
             donation.cycleCount = isSecondDonationOfWeek ? 9 : 8
             donation.startTime = date
             donation.endTime = donation.startTime + (Double.random(in: 32...45) * secondsInMinute)
-            donation.protein = Double.random(in: 6.0...7.2)
+            donation.protein = Double.random(in: 6.4...7.2)
             donation.notes = "This is an example donation for previews \(i)"
 
             donations.append(donation)

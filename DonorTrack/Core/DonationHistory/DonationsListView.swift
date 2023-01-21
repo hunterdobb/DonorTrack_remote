@@ -58,41 +58,42 @@ struct DonationsListView: View {
                             }
                         }
                     }
-                    .toolbar {
-                        ToolbarItem(placement: .automatic) {
-                            Menu {
-                                Picker("Sort", selection: $vm.sort) {
-                                    Text("Newest First").tag(Sort.newestFirst)
-                                    Text("Oldest First").tag(Sort.oldestFirst)
-                                }
 
-                                Picker("Filter Donations", selection: $vm.searchConfig.filter) {
-                                    Label("Show All", systemImage: "list.bullet")
-                                        .tag(SearchConfig.Filter.all)
-
-                                    Label("Show Low Protein", systemImage: "drop.triangle")
-                                        .tag(SearchConfig.Filter.lowProtein)
-                                }
-
-                                Button {
-                                    vm.donationToEdit = .empty(context: DonationsProvider.shared.newContext)
-                                } label: {
-                                    Label("Add Donation Manually", systemImage: "keyboard")
-                                }
-                            } label: {
-                                Label("Options", systemImage: vm.searchConfig.filter == .lowProtein ?
-                                      "ellipsis.circle.fill" : "ellipsis.circle")
-                                    .foregroundColor(vm.searchConfig.filter == .lowProtein ? .orange : .blue)
-                                    .font(.title3)
-                            }
-                        }
-                    }
-                    .navigationDestination(for: DonationEntity.self) { donation in
-                        DonationDetailView(donation: donation, provider: vm.provider)
-                    }
                 }
             }
             .searchable(text: $vm.searchConfig.query, prompt: "Search Notes")
+            .toolbar {
+                ToolbarItem(placement: .automatic) {
+                    Menu {
+                        Picker("Sort", selection: $vm.sort) {
+                            Text("Newest First").tag(Sort.newestFirst)
+                            Text("Oldest First").tag(Sort.oldestFirst)
+                        }
+
+                        Picker("Filter Donations", selection: $vm.searchConfig.filter) {
+                            Label("Show All", systemImage: "list.bullet")
+                                .tag(SearchConfig.Filter.all)
+
+                            Label("Show Low Protein", systemImage: "drop.triangle")
+                                .tag(SearchConfig.Filter.lowProtein)
+                        }
+
+                        Button {
+                            vm.donationToEdit = .empty(context: DonationsProvider.shared.newContext)
+                        } label: {
+                            Label("Add Donation Manually", systemImage: "keyboard")
+                        }
+                    } label: {
+                        Label("Options", systemImage: vm.searchConfig.filter == .lowProtein ?
+                              "ellipsis.circle.fill" : "ellipsis.circle")
+                            .foregroundColor(vm.searchConfig.filter == .lowProtein ? .orange : .blue)
+                            .font(.title3)
+                    }
+                }
+            }
+            .navigationDestination(for: DonationEntity.self) { donation in
+                DonationDetailView(donation: donation, provider: vm.provider)
+            }
             .onChange(of: vm.searchConfig) { newConfig in
                 donations.nsPredicate = DonationEntity.filter(with: newConfig)
 
@@ -124,7 +125,7 @@ struct DonationsListView_Previews: PreviewProvider {
         DonationsListView(vm: .init(provider: .shared))
             .environment(\.managedObjectContext, preview.viewContext)
             .previewDisplayName("List With Data")
-            .onAppear { DonationEntity.makePreview(count: 10, in: preview.viewContext) }
+            .onAppear { DonationEntity.makePreview(count: 3, in: preview.viewContext) }
 
         let emptyPreview = DonationsProvider.shared
         DonationsListView(vm: .init(provider: .shared))
@@ -139,8 +140,15 @@ extension DonationsListView {
             Text("No Donations")
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.largeTitle.bold())
-            Text("Start tracking your first donation by using the 'New' tab below.")
+            Text("Track your donations using the 'New Donation' tab.")
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.body)
+
+            Text("You can also add donations manually by tapping the button above and selecting 'Add Donation Manually'")
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.callout)
+                .foregroundColor(.primary.opacity(0.6))
+
         }
         .padding()
         .background(.ultraThickMaterial, in: RoundedRectangle(cornerRadius: 10))

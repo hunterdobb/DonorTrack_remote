@@ -15,7 +15,7 @@ struct ContentView: View {
             NewDonationView(vm: .init(provider: provider))
                 .tabItem {
                     Image(systemName: "plus.circle.fill")
-                    Text("New")
+                    Text("New Donation")
                 }
             
             DonationsListView(vm: .init(provider: provider))
