@@ -26,7 +26,7 @@ final class DonationsProvider {
     private init() {
         persistentContainer = NSPersistentContainer(name: "DonationsDataModel")
 
-        if EnvironmentValues.isPreview {
+        if EnvironmentValues.isPreview || Thread.current.isRunningXCTest {
             persistentContainer.persistentStoreDescriptions.first?.url = .init(fileURLWithPath: "/dev/null")
         }
 
@@ -66,4 +66,19 @@ extension EnvironmentValues {
     static var isPreview: Bool {
         ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
     }
+}
+
+extension Thread {
+    var isRunningXCTest: Bool {
+    for key in self.threadDictionary.allKeys {
+      guard let keyAsString = key as? String else {
+        continue
+      }
+
+      if keyAsString.split(separator: ".").contains("xctest") {
+        return true
+      }
+    }
+    return false
+  }
 }

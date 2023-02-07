@@ -26,7 +26,11 @@ final class DonationEntity: NSManagedObject, Identifiable {
     }
 
     var avgCycleDurationString: String {
-        Date.durationFormat.string(from: (endTime.timeIntervalSince(startTime)) / Double(cycleCount)) ?? "Error"
+        if cycleCount != 0 {
+            return Date.durationFormat.string(from: (endTime.timeIntervalSince(startTime)) / Double(cycleCount)) ?? "Error"
+        }
+
+        return "Error"
     }
 
     override func awakeFromInsert() {
@@ -34,7 +38,6 @@ final class DonationEntity: NSManagedObject, Identifiable {
 
         setPrimitiveValue(Date.now, forKey: "startTime")
         setPrimitiveValue(Date.now, forKey: "endTime")
-//        setPrimitiveValue(0.0, forKey: "protein")
         setPrimitiveValue(0, forKey: "cycleCount")
     }
 }
@@ -94,7 +97,7 @@ extension DonationEntity {
             donation.cycleCount = isSecondDonationOfWeek ? 9 : 8
             donation.startTime = date
             donation.endTime = donation.startTime + (Double.random(in: 32...45) * secondsInMinute)
-            donation.protein = Double.random(in: 6.4...7.2)
+            donation.protein = Double.random(in: 6.0...7.2)
             donation.notes = "This is an example donation for previews \(i)"
 
             donations.append(donation)

@@ -12,10 +12,11 @@ extension EditDonationView {
     @MainActor
     class ViewModel: ObservableObject {
         @Published var donation: DonationEntity
+        @Published var donationDay: Date
         let isNew: Bool
 
         enum SaveError: Error {
-            case notFilledIn
+            case notFilledIn, invalidDateRange
         }
 
         private let context: NSManagedObjectContext
@@ -43,12 +44,40 @@ extension EditDonationView {
                let existingDonationCopy = provider.exists(donation, in: context) {
                 self.donation = existingDonationCopy
                 self.isNew = false
+                donationDay = existingDonationCopy.startTime
                 populateFields()
             } else {
                 self.donation = DonationEntity(context: self.context)
+                donationDay = Date()
                 self.isNew = true
             }
 
+        }
+
+        func updateDay(with newValue: Date) {
+            let calendar = Calendar.current
+            let newComponents = calendar.dateComponents([.month, .day, .year], from: newValue)
+
+            let existingStartComponents = calendar.dateComponents([.hour, .minute, .second], from: donation.startTime)
+            var newStartTime = DateComponents()
+            newStartTime.month = newComponents.month
+            newStartTime.day = newComponents.day
+            newStartTime.year = newComponents.year
+            newStartTime.hour = existingStartComponents.hour
+            newStartTime.minute = existingStartComponents.minute
+            newStartTime.second = existingStartComponents.second
+
+            let existingEndComponents = calendar.dateComponents([.hour, .minute, .second], from: donation.endTime)
+            var newEndTime = DateComponents()
+            newEndTime.month = newComponents.month
+            newEndTime.day = newComponents.day
+            newEndTime.year = newComponents.year
+            newEndTime.hour = existingEndComponents.hour
+            newEndTime.minute = existingEndComponents.minute
+            newEndTime.second = existingEndComponents.second
+
+            donation.startTime = calendar.date(from: newStartTime)!
+            donation.endTime = calendar.date(from: newEndTime)!
         }
 
         private func fieldsValidated() -> Bool {
@@ -109,8 +138,12 @@ extension EditDonationView {
         func save() throws {
             if isNew {
                 if fieldsValidated() {
-                    setData()
-                    try provider.persist(in: context)
+                    if donation.startTime < donation.endTime {
+                        setData()
+                        try provider.persist(in: context)
+                    } else {
+                        throw SaveError.invalidDateRange
+                    }
                 } else {
                     throw SaveError.notFilledIn
                 }

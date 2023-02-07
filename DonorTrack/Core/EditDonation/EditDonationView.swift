@@ -15,25 +15,36 @@ struct EditDonationView: View {
     @FocusState private var focusedField: FocusedField?
 
     @State private var showingAlert = false
-    let alertTitle = "Fill out all the info before saving"
+    @State private var alertTitle = ""
 
     enum FocusedField {
         case donationAmount, protein, compensation, notes, cycle
     }
+
+//    @State private var donationDay = Date()
 
     var body: some View {
         NavigationStack {
             List {
                 Section("Time") {
 
-                    DatePicker("Start Time", selection: $vm.donation.startTime, displayedComponents: [.date, .hourAndMinute])
-                    DatePicker("End Time", selection: $vm.donation.endTime, displayedComponents: [.date, .hourAndMinute])
+                    DatePicker("Date", selection: $vm.donationDay, in: ...Date(),displayedComponents: .date)
+
+                    DatePicker("Start Time", selection: $vm.donation.startTime, displayedComponents: .hourAndMinute)
+
+                    DatePicker("End Time", selection: $vm.donation.endTime, displayedComponents: .hourAndMinute)
 
                     LabeledContent {
                         Text(vm.donation.durationString)
                     } label: {
                         Text("Duration")
                     }
+                }
+                .onAppear {
+                    vm.donationDay = vm.donation.startTime
+                }
+                .onReceive(vm.$donationDay) { newValue in
+                    vm.updateDay(with: newValue)
                 }
 
                 Section("Info") {
@@ -102,7 +113,7 @@ struct EditDonationView: View {
                         .focused($focusedField, equals: .notes)
                 }
             }
-            .navigationTitle(vm.isNew ? Text("Manual entry") : Text(vm.donation.startTime, style: .date))
+            .navigationTitle(vm.isNew ? Text("Manual Entry") : Text("Edit Donation"))
             .navigationBarTitleDisplayMode(.inline)
             .alert(alertTitle, isPresented: $showingAlert) { }
             .toolbar {
@@ -112,6 +123,10 @@ struct EditDonationView: View {
                             try vm.save()
                             dismiss()
                         } catch EditDonationView.ViewModel.SaveError.notFilledIn {
+                            alertTitle = "Fill out all the info before saving"
+                            showingAlert = true
+                        } catch EditDonationView.ViewModel.SaveError.invalidDateRange {
+                            alertTitle = "Start Time must come before End Time"
                             showingAlert = true
                         } catch {
                             print(error)
@@ -152,4 +167,8 @@ struct EditDonationView_Previews: PreviewProvider {
         }
         .previewDisplayName("EditView With Data")
     }
+}
+
+extension EditDonationView {
+
 }

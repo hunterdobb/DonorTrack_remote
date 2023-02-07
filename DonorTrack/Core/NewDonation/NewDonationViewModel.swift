@@ -8,13 +8,13 @@
 import CoreData
 import SwiftUI
 
-// Extension is used for namespacing
-// Make it only available to be used in NewDonationView
+// Extension is used for name-spacing
+// Makes vm only available to be used in NewDonationView
 extension NewDonationView {
     @MainActor
     class ViewModel: ObservableObject {
         @Published var donation: DonationEntity
-        private let context: NSManagedObjectContext
+        private var context: NSManagedObjectContext
         private let provider: DonationsProvider
 
         @Published var proteinText = ""
@@ -30,8 +30,16 @@ extension NewDonationView {
         @Published var actionButtonText = "Start Donation"
         @Published var actionButtonColor: Color = .blue
 
-        @Published var showingAlert = false
-        let alertTitle = "Fill out all the info before saving"
+		@Published var isSaved = false
+
+        // Alerts
+        @Published var showingNotFilledInAlert = false
+        @Published var showingFinishConfirmationAlert = false
+        @Published var showingResetConfirmationAlert = false
+
+        // Should be set before showing each alert
+        var alertTitle = ""
+        var alertMessage = ""
 
         var canUndoCycleCount: Bool {
             cycleCount > 0
@@ -58,42 +66,51 @@ extension NewDonationView {
         }
 
         func actionButtonTapped() {
-            switch donationState {
-            case .idle:
-                startTime = Date.now
-                donation.startTime = Date.now
-                
-                actionButtonColor = .pink
-                actionButtonText = "Finish Donation"
-                donationState = .started
-                HapticManager.instance.impact(style: .rigid)
-            case .started:
-                endTime = Date.now
-                donation.endTime = Date.now
+			switch donationState {
+			case .idle:
+				startTime = Date.now
+				donation.startTime = Date.now
+				
+				actionButtonColor = .pink
+				actionButtonText = "Finish Donation"
+				donationState = .started
+				hapticImpact(.rigid)
+			case .started:
+				endTime = Date.now
+				donation.endTime = Date.now
+				
+				alertTitle = "Finished?"
+				showingFinishConfirmationAlert = true
+				// finishDonation() is called from view
+			case .finished:
+				if fieldsValidated() {
+					do {
+						try save()
+						isSaved = true
+						resetView()
+					} catch {
+						print(error)
+					}
+				} else {
+					alertTitle = "Fill out all the info before saving"
+					showingNotFilledInAlert = true
+					print("Not valid")
+				}
+			}
+        }
 
-                actionButtonColor = .mint
-                actionButtonText = "Save Donation"
-                donationState = .finished
-            case .finished:
-                if fieldsValidated() {
-                    do {
-                        try save()
-                        resetView()
-                    } catch {
-                        print(error)
-                    }
-                } else {
-                    showingAlert = true
-                    print("Not valid")
-                }
-            }
+        // Called from view
+        func finishDonation() {
+            actionButtonColor = .mint
+            actionButtonText = "Save Donation"
+            donationState = .finished
         }
 
         private func startDonation() {
 
         }
 
-        private func resetView() {
+        func resetView() {
             donationState = .idle
             actionButtonText = "Start Donation"
             actionButtonColor = .blue
@@ -106,9 +123,11 @@ extension NewDonationView {
             endTime = nil
 
             // Create new DonationEntity to edit
-            print("\n\nBEFORE: \(String(describing: donation))\n\n")
-            donation = DonationEntity(context: self.context)
-            print("\n\nAFTER: \(String(describing: donation))\n\n")
+            // We have to update the context so we have new data to work with
+            // If we don't do this, donations that we reset will still exist and get saved when we call context.save()
+            // This is bc we were making new DonationEntity's in the same context
+            context = provider.newContext
+            donation = DonationEntity(context: context)
         }
 
         private func fieldsValidated() -> Bool {
@@ -118,7 +137,7 @@ extension NewDonationView {
         func incrementCycleCount() {
             cycleCount += 1
             donation.cycleCount = cycleCount
-            HapticManager.instance.impact(style: .rigid)
+			hapticImpact(.rigid)
         }
 
         func undoCycleCount() {
@@ -126,7 +145,7 @@ extension NewDonationView {
                 cycleCount -= 1
                 donation.cycleCount = cycleCount
             }
-            HapticManager.instance.impact(style: .rigid)
+			hapticImpact(.rigid)
         }
     }
 }

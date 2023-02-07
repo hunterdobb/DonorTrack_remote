@@ -29,6 +29,10 @@ struct NewDonationView: View {
     @ObservedObject var vm: ViewModel
 
     @FocusState private var focusedField: FocusedField?
+    @State private var tmp = Date()
+	@State private var shouldShowSuccess = false
+
+//	let successfulAction: () -> Void
     
     enum FocusedField {
         case donationAmount, protein, compensation, notes
@@ -45,13 +49,45 @@ struct NewDonationView: View {
                         } else {
                             cycleCountView
                             donatingNowInfo
-                            donationDuration
-
                         }
+
+                        donationDuration
                         notesField
                             .padding(.top)
+
                         if focusedField == nil {
                             scrollSpacer
+                        }
+                    }
+					.onChange(of: vm.isSaved) { isSaved in
+						if isSaved {
+							withAnimation(.spring()) {
+								shouldShowSuccess.toggle()
+								hapticNotification(.success)
+							}
+
+						}
+					}
+					.overlay {
+						if shouldShowSuccess {
+							CheckmarkView()
+								.transition(.scale.combined(with: .opacity))
+								.onAppear {
+									DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+										withAnimation(.spring()) {
+											shouldShowSuccess.toggle()
+											vm.isSaved = false
+										}
+									}
+								}
+						}
+					}
+                    .onReceive(vm.$donationState) { state in
+                        // This is a temporary fix to make the timer start updating
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            if state == .started {
+                                tmp = .now
+                            }
                         }
                     }
                     .id("top")
@@ -76,6 +112,7 @@ struct NewDonationView: View {
                     }
                 }
             }
+			// MARK: - Test
             .overlay(alignment: .bottom) {
                 if focusedField == nil {
                     actionButton
@@ -84,11 +121,36 @@ struct NewDonationView: View {
             .navigationTitle("New Donation")
             .navigationBarTitleDisplayMode(.inline)
             .scrollDismissesKeyboard(.automatic)
-            .alert(vm.alertTitle, isPresented: $vm.showingAlert) { }
+            .alert(vm.alertTitle, isPresented: $vm.showingNotFilledInAlert) { }
+            .alert(vm.alertTitle, isPresented: $vm.showingFinishConfirmationAlert) {
+                Button("Finish") {
+                    vm.finishDonation()
+                }
+
+                Button("Cancel", role: .cancel) {}
+            }
+            .alert(vm.alertTitle, isPresented: $vm.showingResetConfirmationAlert) {
+                Button("Reset", role: .destructive) {
+                    vm.resetView()
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text(vm.alertMessage)
+            }
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
                     keyboardToolbarButtons
+                }
+
+                ToolbarItem(placement: .destructiveAction) {
+                    if vm.donationState > .idle {
+                        Button("Reset") {
+                            vm.alertTitle = "Are you sure?"
+                            vm.alertMessage = "This will delete all the current info and cannot be undone."
+                            vm.showingResetConfirmationAlert = true
+                        }
+                    }
                 }
             }
         }
@@ -100,20 +162,20 @@ struct NewDonationView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             let preview = DonationsProvider.shared
-            NewDonationView(vm: .init(provider: preview))
+			NewDonationView(vm: .init(provider: preview))
                 .environment(\.managedObjectContext, preview.viewContext)
         }
     }
 }
 
-
+// MARK: - Views Extension
 extension NewDonationView {
     private var valueFields: some View {
         VStack(alignment: .leading) {
             Text("Enter Donation Info")
                 .font(.headline)
 
-            ValueField(text: $vm.amountText, label: "Donation Amount", placeholder: "0", unit: "mL", color: .cyan)
+            ValueField(text: $vm.amountText, label: "Donation Amount", placeholder: "0", suffix: "mL", color: .cyan)
                 .keyboardType(.numberPad)
                 .focused($focusedField, equals: .donationAmount)
                 .onTapGesture {
@@ -128,28 +190,54 @@ extension NewDonationView {
                     vm.donation.amountDonated = amountDonated
                 }
 
-            HStack {
-                ValueField(text: $vm.proteinText, label: "Protein", placeholder: "0.0", unit: "g/dL", color: .orange)
-                    .keyboardType(.decimalPad)
-                    .focused($focusedField, equals: .protein)
-                    .onChange(of: vm.proteinText) { text in
-                        guard let protein = Double(text) else {
-                            vm.proteinText = ""
-                            return
+            ViewThatFits {
+                HStack {
+                    ValueField(text: $vm.proteinText, label: "Protein", placeholder: "0.0", suffix: "g/dL", color: .orange)
+                        .keyboardType(.decimalPad)
+                        .focused($focusedField, equals: .protein)
+                        .onChange(of: vm.proteinText) { text in
+                            guard let protein = Double(text) else {
+                                vm.proteinText = ""
+                                return
+                            }
+                            vm.donation.protein = protein
                         }
-                        vm.donation.protein = protein
-                    }
 
-                CompensationField(text: $vm.compensationText)
-                    .keyboardType(.numberPad)
-                    .focused($focusedField, equals: .compensation)
-                    .onChange(of: vm.compensationText) { text in
-                        guard let compensation = Int16(text) else {
-                            vm.compensationText = ""
-                            return
+                    ValueField(text: $vm.compensationText, label: "Compensation", placeholder: "0", prefix: "$", color: .green)
+                        .keyboardType(.numberPad)
+                        .focused($focusedField, equals: .compensation)
+                        .onChange(of: vm.compensationText) { text in
+                            guard let compensation = Int16(text) else {
+                                vm.compensationText = ""
+                                return
+                            }
+                            vm.donation.compensation = compensation
                         }
-                        vm.donation.compensation = compensation
-                    }
+                }
+
+                VStack {
+                    ValueField(text: $vm.proteinText, label: "Protein", placeholder: "0.0", suffix: "g/dL", color: .orange)
+                        .keyboardType(.decimalPad)
+                        .focused($focusedField, equals: .protein)
+                        .onChange(of: vm.proteinText) { text in
+                            guard let protein = Double(text) else {
+                                vm.proteinText = ""
+                                return
+                            }
+                            vm.donation.protein = protein
+                        }
+
+                    ValueField(text: $vm.compensationText, label: "Compensation", placeholder: "0", prefix: "$", color: .green)
+                        .keyboardType(.numberPad)
+                        .focused($focusedField, equals: .compensation)
+                        .onChange(of: vm.compensationText) { text in
+                            guard let compensation = Int16(text) else {
+                                vm.compensationText = ""
+                                return
+                            }
+                            vm.donation.compensation = compensation
+                        }
+                }
             }
         }
     }
@@ -199,7 +287,7 @@ extension NewDonationView {
             Button {
                 vm.undoCycleCount()
             } label: {
-                Image(systemName: "arrow.uturn.backward")
+				Symbols.arrowUTurn
                     .frame(width: 50, height: 35)
                     .font(.largeTitle)
                     .bold()
@@ -214,7 +302,7 @@ extension NewDonationView {
             Button {
                 vm.incrementCycleCount()
             } label: {
-                Image(systemName: "plus")
+				Symbols.plus
                     .frame(width: 100, height: 35)
                     .font(.largeTitle)
                     .bold()
@@ -289,7 +377,7 @@ extension NewDonationView {
         Button {
             vm.actionButtonTapped()
         } label: {
-            // This button will switch between Start and Finish
+            // This button will switch between Start, Finish, and Save
             Text(vm.actionButtonText)
                 .frame(maxWidth: .infinity)
 
@@ -310,7 +398,7 @@ extension NewDonationView {
             Button {
                 focusedField = nil
             } label: {
-                Image(systemName: "keyboard.chevron.compact.down.fill")
+				Symbols.dismissKeyboard
             }
             .font(.headline)
             .frame(maxWidth: .infinity)

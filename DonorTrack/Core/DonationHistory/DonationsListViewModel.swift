@@ -25,7 +25,7 @@ extension DonationsListView {
     @MainActor
     class ViewModel: ObservableObject {
         private let context: NSManagedObjectContext
-        let provider: DonationsProvider // I made this unprivate to pass it into another view?
+        let provider: DonationsProvider // I made this un-private to pass it into another view?
 
         @Published var showNotes = false
 

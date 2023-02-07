@@ -20,8 +20,7 @@ struct DataField: View {
             HStack(spacing: 0) {
                 if let prefix {
                     Text(prefix)
-                        .foregroundColor(color.opacity(text.isEmpty ? 0.5 : 1))
-                }
+                        .foregroundColor(color.opacity(text.isEmpty ? 0.5 : 1))                }
 
                 TextField(text: $text) {
                     Text(placeholder)

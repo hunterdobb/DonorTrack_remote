@@ -12,18 +12,25 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            NewDonationView(vm: .init(provider: provider))
+			NewDonationView(vm: .init(provider: provider))
                 .tabItem {
-                    Image(systemName: "plus.circle.fill")
+					Symbols.plusCircle
                     Text("New Donation")
                 }
             
             DonationsListView(vm: .init(provider: provider))
                 .tabItem {
-                    Image(systemName: "list.bullet.circle.fill")
+					Symbols.listBullet
                     Text("Donations")
                 }
+
+			SettingsView()
+				.tabItem {
+					Symbols.gearShape
+					Text("Settings")
+				}
         }
+        .dynamicTypeSize(.xSmall ... .xxxLarge)
 
     }
 }

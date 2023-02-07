@@ -12,6 +12,24 @@ struct DonationsListView: View {
 
     @FetchRequest(fetchRequest: DonationEntity.all()) private var donations
 
+    func groupByMonth(_ result: FetchedResults<DonationEntity>) -> [[DonationEntity]] {
+        Dictionary(grouping: result) { (donation: DonationEntity) in
+            donation.startTime.month
+        }.values.sorted {
+            if vm.sort == .newestFirst {
+                return $0[0].startTime > $1[0].startTime
+            } else {
+                return $0[0].startTime < $1[0].startTime
+            }
+        }
+    }
+
+    func totalEarnedAllTime() -> String {
+        let compensations = donations.map { Int($0.compensation) }
+        let total = compensations.reduce(0, +)
+        return "$\(total)"
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -23,41 +41,77 @@ struct DonationsListView: View {
                         .frame(maxHeight: .infinity, alignment: .top)
                         .padding(.top)
                 } else {
-                    List {
-                        ForEach(donations) { donation in
-                            // Workaround to hide default list indicator
-                            ZStack(alignment: .leading){
-                                NavigationLink(value: donation) {
-                                    EmptyView()
-                                }
-                                .opacity(0)
+                    VStack {
 
-                                DonationRowView(donation: donation, provider: vm.provider, showNotes: $vm.showNotes)
-//                                    .contextMenu {
-//                                        menuButtons
-//                                    }
-                                    .swipeActions(allowsFullSwipe: false) {
-                                        Button(role: .destructive) {
-                                            do {
-                                                // using provider.newContext is safer and prevents crashing
-                                                try vm.provider.delete(donation, in: vm.provider.newContext)
-                                            } catch {
-                                                print(error)
+
+                        List {
+                            // TODO: Implement totals at top of list
+//                            if vm.searchConfig.query.isEmpty && vm.searchConfig.filter == .all {
+//                                totalEarnedView
+//                            }
+                            ForEach(groupByMonth(donations), id: \.self) { (months: [DonationEntity]) in
+                                Section { // header below, shows month
+                                    ForEach(months) { donation in
+                                        // Workaround to hide default list indicator
+                                        // I do this so I can move to upper right corner
+                                        ZStack(alignment: .leading){
+                                            NavigationLink(value: donation) {
+                                                EmptyView()
+
                                             }
-                                        } label: {
-                                            Label("Delete", systemImage: "trash")
-                                        }
+                                            .opacity(0)
 
-                                        Button {
-                                            vm.donationToEdit = donation
-                                        } label: {
-                                            Label("Edit", systemImage: "pencil")
+                                            DonationRowView(donation: donation, provider: vm.provider, showNotes: $vm.showNotes)
+
+            //                                    .contextMenu {
+            //                                        menuButtons
+            //                                    }
+                                                .swipeActions(allowsFullSwipe: false) {
+                                                    Button(role: .destructive) {
+                                                        do {
+                                                            // using provider.newContext is safer and prevents crashing
+                                                            try vm.provider.delete(donation, in: vm.provider.newContext)
+                                                        } catch {
+                                                            print(error)
+                                                        }
+                                                    } label: {
+                                                        Label("Delete", systemImage: "trash")
+                                                    }
+
+                                                    Button {
+                                                        vm.donationToEdit = donation
+                                                    } label: {
+                                                        Label("Edit", systemImage: "pencil")
+                                                    }
+                                                    .tint(.orange)
+                                                }
+
                                         }
-                                        .tint(.orange)
                                     }
+                                } header: {
+                                    let isSameYear = Calendar.current.isDate(months[0].startTime, equalTo: .now, toGranularity: .year)
+                                    let yearText = isSameYear ? "" : ", \(months[0].startTime.formatted(.dateTime.year()))"
+
+                                    Text("\(months[0].startTime, format: .dateTime.month(.wide))\(yearText)")
+                                        .foregroundColor(.secondary)
+                                        .font(.headline)
+                                        .bold()
+                                }
+                                .textCase(nil)
                             }
                         }
+                        if vm.searchConfig.filter == .lowProtein {
+                            HStack {
+								Symbols.exclamationmarkCircle
+                                Text("Filtered by Low Protein")
+                            }
+                            .padding(.bottom, 20)
+                            .foregroundColor(.orange)
+                            .font(.headline)
+                        }
+
                     }
+//                    .background(.regularMaterial)
 
                 }
             }
@@ -125,7 +179,7 @@ struct DonationsListView_Previews: PreviewProvider {
         DonationsListView(vm: .init(provider: .shared))
             .environment(\.managedObjectContext, preview.viewContext)
             .previewDisplayName("List With Data")
-            .onAppear { DonationEntity.makePreview(count: 3, in: preview.viewContext) }
+            .onAppear { DonationEntity.makePreview(count: 10, in: preview.viewContext) }
 
         let emptyPreview = DonationsProvider.shared
         DonationsListView(vm: .init(provider: .shared))
@@ -149,10 +203,33 @@ extension DonationsListView {
                 .font(.callout)
                 .foregroundColor(.primary.opacity(0.6))
 
+            if vm.searchConfig.filter == .lowProtein {
+                Divider()
+                HStack {
+					Symbols.exclamationmarkCircle
+                    Text("Filtered by Low Protein")
+                }
+                .foregroundColor(.orange)
+                .font(.headline)
+            }
         }
         .padding()
         .background(.ultraThickMaterial, in: RoundedRectangle(cornerRadius: 10))
         .padding()
+    }
+
+    private var totalEarnedView: some View {
+        Text(totalEarnedAllTime())
+            .font(.system(.title, design: .rounded, weight: .bold))
+            .foregroundColor(.green)
+            .padding()
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+            .background {
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundColor(.white)
+            }
+            .offset(x: -15, y: 10)
     }
 
     private var menuButtons: some View {

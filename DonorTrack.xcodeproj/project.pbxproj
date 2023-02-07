@@ -21,19 +21,33 @@
 		B51C4BDE2972F6E500FEEF50 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BDD2972F6E500FEEF50 /* TestView.swift */; };
 		B51C4BE12972FD0B00FEEF50 /* View+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BE02972FD0B00FEEF50 /* View+Ext.swift */; };
 		B51C4BE32973008500FEEF50 /* ValueField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BE22973008500FEEF50 /* ValueField.swift */; };
-		B51C4BE5297378BD00FEEF50 /* CompensationField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BE4297378BD00FEEF50 /* CompensationField.swift */; };
 		B51C4BEA29743E9A00FEEF50 /* Binding+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BE929743E9A00FEEF50 /* Binding+Ext.swift */; };
 		B51C4BEC2974BB6000FEEF50 /* NewDonationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BEB2974BB6000FEEF50 /* NewDonationViewModel.swift */; };
 		B51C4BEE29759DE100FEEF50 /* KeyboardReadable+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BED29759DE100FEEF50 /* KeyboardReadable+Ext.swift */; };
 		B51C4BF02975A45400FEEF50 /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BEF2975A45400FEEF50 /* Date+Ext.swift */; };
-		B51C4BF22975D67D00FEEF50 /* CapsuleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BF12975D67D00FEEF50 /* CapsuleButton.swift */; };
 		B51C4BF52975EA4900FEEF50 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BF42975EA4900FEEF50 /* HapticManager.swift */; };
 		B51C4BF92976EDD200FEEF50 /* DonationsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BF82976EDD200FEEF50 /* DonationsListViewModel.swift */; };
 		B51C4BFD297895CB00FEEF50 /* AdaptToKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BFC297895CB00FEEF50 /* AdaptToKeyboard.swift */; };
 		B51C4C002978C71D00FEEF50 /* EditDonationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BFF2978C71D00FEEF50 /* EditDonationView.swift */; };
 		B51C4C032978CAA000FEEF50 /* EditDonationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4C022978CAA000FEEF50 /* EditDonationViewModel.swift */; };
+		B5359EC3298EAE4600566111 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5359EC2298EAE4600566111 /* SettingsView.swift */; };
+		B5359EC5298EB5D400566111 /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5359EC4298EB5D400566111 /* Symbols.swift */; };
+		B5359EC7298EB94A00566111 /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5359EC6298EB94A00566111 /* UserDefaultKeys.swift */; };
 		B573232E297B384B003D0C3E /* DataField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573232D297B384B003D0C3E /* DataField.swift */; };
+		B5A61DAE297ECD6A0065FADC /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A61DAD297ECD6A0065FADC /* ModelTests.swift */; };
+		B5A61DB0297F261A0065FADC /* DTFormTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A61DAF297F261A0065FADC /* DTFormTextFieldStyle.swift */; };
+		B5CDFA97298DACE4005072BC /* CheckmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CDFA96298DACE4005072BC /* CheckmarkView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B5A61DA8297ECD200065FADC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B51C4BB02972032800FEEF50 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B51C4BB72972032800FEEF50;
+			remoteInfo = DonorTrack;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		B51C4BB82972032800FEEF50 /* DonorTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DonorTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -51,23 +65,35 @@
 		B51C4BDD2972F6E500FEEF50 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		B51C4BE02972FD0B00FEEF50 /* View+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Ext.swift"; sourceTree = "<group>"; };
 		B51C4BE22973008500FEEF50 /* ValueField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueField.swift; sourceTree = "<group>"; };
-		B51C4BE4297378BD00FEEF50 /* CompensationField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompensationField.swift; sourceTree = "<group>"; };
 		B51C4BE929743E9A00FEEF50 /* Binding+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Ext.swift"; sourceTree = "<group>"; };
 		B51C4BEB2974BB6000FEEF50 /* NewDonationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDonationViewModel.swift; sourceTree = "<group>"; };
 		B51C4BED29759DE100FEEF50 /* KeyboardReadable+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyboardReadable+Ext.swift"; sourceTree = "<group>"; };
 		B51C4BEF2975A45400FEEF50 /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
-		B51C4BF12975D67D00FEEF50 /* CapsuleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleButton.swift; sourceTree = "<group>"; };
 		B51C4BF42975EA4900FEEF50 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		B51C4BF6297605FC00FEEF50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B51C4BF82976EDD200FEEF50 /* DonationsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationsListViewModel.swift; sourceTree = "<group>"; };
 		B51C4BFC297895CB00FEEF50 /* AdaptToKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptToKeyboard.swift; sourceTree = "<group>"; };
 		B51C4BFF2978C71D00FEEF50 /* EditDonationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDonationView.swift; sourceTree = "<group>"; };
 		B51C4C022978CAA000FEEF50 /* EditDonationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDonationViewModel.swift; sourceTree = "<group>"; };
+		B5359EC2298EAE4600566111 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B5359EC4298EB5D400566111 /* Symbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
+		B5359EC6298EB94A00566111 /* UserDefaultKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultKeys.swift; sourceTree = "<group>"; };
 		B573232D297B384B003D0C3E /* DataField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataField.swift; sourceTree = "<group>"; };
+		B5A61DA4297ECD200065FADC /* DonorTrackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DonorTrackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5A61DAD297ECD6A0065FADC /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
+		B5A61DAF297F261A0065FADC /* DTFormTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTFormTextFieldStyle.swift; sourceTree = "<group>"; };
+		B5CDFA96298DACE4005072BC /* CheckmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckmarkView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B51C4BB52972032800FEEF50 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B5A61DA1297ECD200065FADC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -81,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				B51C4BBA2972032800FEEF50 /* DonorTrack */,
+				B5A61DA5297ECD200065FADC /* DonorTrackTests */,
 				B51C4BB92972032800FEEF50 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -89,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				B51C4BB82972032800FEEF50 /* DonorTrack.app */,
+				B5A61DA4297ECD200065FADC /* DonorTrackTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -151,6 +179,7 @@
 		B51C4BE62973839E00FEEF50 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				B5359EC1298EAE2400566111 /* Settings */,
 				B51C4C012978CA4A00FEEF50 /* DonationDetail */,
 				B51C4BFE2978C70700FEEF50 /* EditDonation */,
 				B51C4BE82973842B00FEEF50 /* NewDonation */,
@@ -164,7 +193,8 @@
 			isa = PBXGroup;
 			children = (
 				B51C4BE22973008500FEEF50 /* ValueField.swift */,
-				B51C4BE4297378BD00FEEF50 /* CompensationField.swift */,
+				B5A61DAF297F261A0065FADC /* DTFormTextFieldStyle.swift */,
+				B5CDFA96298DACE4005072BC /* CheckmarkView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -181,8 +211,9 @@
 		B51C4BF32975EA3200FEEF50 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				B51C4BF12975D67D00FEEF50 /* CapsuleButton.swift */,
 				B51C4BF42975EA4900FEEF50 /* HapticManager.swift */,
+				B5359EC4298EB5D400566111 /* Symbols.swift */,
+				B5359EC6298EB94A00566111 /* UserDefaultKeys.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -215,6 +246,22 @@
 			path = DonationDetail;
 			sourceTree = "<group>";
 		};
+		B5359EC1298EAE2400566111 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				B5359EC2298EAE4600566111 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		B5A61DA5297ECD200065FADC /* DonorTrackTests */ = {
+			isa = PBXGroup;
+			children = (
+				B5A61DAD297ECD6A0065FADC /* ModelTests.swift */,
+			);
+			path = DonorTrackTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -235,6 +282,24 @@
 			productReference = B51C4BB82972032800FEEF50 /* DonorTrack.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B5A61DA3297ECD200065FADC /* DonorTrackTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B5A61DAC297ECD200065FADC /* Build configuration list for PBXNativeTarget "DonorTrackTests" */;
+			buildPhases = (
+				B5A61DA0297ECD200065FADC /* Sources */,
+				B5A61DA1297ECD200065FADC /* Frameworks */,
+				B5A61DA2297ECD200065FADC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B5A61DA9297ECD200065FADC /* PBXTargetDependency */,
+			);
+			name = DonorTrackTests;
+			productName = DonorTrackTests;
+			productReference = B5A61DA4297ECD200065FADC /* DonorTrackTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -247,6 +312,10 @@
 				TargetAttributes = {
 					B51C4BB72972032800FEEF50 = {
 						CreatedOnToolsVersion = 14.2;
+					};
+					B5A61DA3297ECD200065FADC = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = B51C4BB72972032800FEEF50;
 					};
 				};
 			};
@@ -264,6 +333,7 @@
 			projectRoot = "";
 			targets = (
 				B51C4BB72972032800FEEF50 /* DonorTrack */,
+				B5A61DA3297ECD200065FADC /* DonorTrackTests */,
 			);
 		};
 /* End PBXProject section */
@@ -278,6 +348,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B5A61DA2297ECD200065FADC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -288,23 +365,26 @@
 				B51C4C032978CAA000FEEF50 /* EditDonationViewModel.swift in Sources */,
 				B51C4BFD297895CB00FEEF50 /* AdaptToKeyboard.swift in Sources */,
 				B51C4BCC297204B500FEEF50 /* DonationsListView.swift in Sources */,
-				B51C4BF22975D67D00FEEF50 /* CapsuleButton.swift in Sources */,
 				B51C4BBE2972032800FEEF50 /* ContentView.swift in Sources */,
 				B51C4BF02975A45400FEEF50 /* Date+Ext.swift in Sources */,
 				B51C4BEE29759DE100FEEF50 /* KeyboardReadable+Ext.swift in Sources */,
 				B51C4BD829720BEC00FEEF50 /* DonationsProvider.swift in Sources */,
 				B573232E297B384B003D0C3E /* DataField.swift in Sources */,
+				B5359EC7298EB94A00566111 /* UserDefaultKeys.swift in Sources */,
 				B51C4BF92976EDD200FEEF50 /* DonationsListViewModel.swift in Sources */,
 				B51C4BF52975EA4900FEEF50 /* HapticManager.swift in Sources */,
+				B5CDFA97298DACE4005072BC /* CheckmarkView.swift in Sources */,
 				B51C4BDC297215E700FEEF50 /* DonationDetailView.swift in Sources */,
 				B51C4BE32973008500FEEF50 /* ValueField.swift in Sources */,
 				B51C4BCA2972049800FEEF50 /* NewDonationView.swift in Sources */,
 				B51C4BD42972090900FEEF50 /* DonationEntity.swift in Sources */,
+				B5359EC3298EAE4600566111 /* SettingsView.swift in Sources */,
 				B51C4BDE2972F6E500FEEF50 /* TestView.swift in Sources */,
 				B51C4BEC2974BB6000FEEF50 /* NewDonationViewModel.swift in Sources */,
+				B5A61DB0297F261A0065FADC /* DTFormTextFieldStyle.swift in Sources */,
 				B51C4BE12972FD0B00FEEF50 /* View+Ext.swift in Sources */,
 				B51C4BEA29743E9A00FEEF50 /* Binding+Ext.swift in Sources */,
-				B51C4BE5297378BD00FEEF50 /* CompensationField.swift in Sources */,
+				B5359EC5298EB5D400566111 /* Symbols.swift in Sources */,
 				B51C4BD22972056900FEEF50 /* DonationsDataModel.xcdatamodeld in Sources */,
 				B51C4BBC2972032800FEEF50 /* DonorTrackApp.swift in Sources */,
 				B51C4C002978C71D00FEEF50 /* EditDonationView.swift in Sources */,
@@ -312,7 +392,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B5A61DA0297ECD200065FADC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B5A61DAE297ECD6A0065FADC /* ModelTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B5A61DA9297ECD200065FADC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B51C4BB72972032800FEEF50 /* DonorTrack */;
+			targetProxy = B5A61DA8297ECD200065FADC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		B51C4BC42972032900FEEF50 /* Debug */ = {
@@ -435,7 +531,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DonorTrack/Preview Content\"";
 				DEVELOPMENT_TEAM = 5M7L7W2WHX;
 				ENABLE_PREVIEWS = YES;
@@ -452,7 +548,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hunterdobbapps.DonorTrack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -470,7 +566,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DonorTrack/Preview Content\"";
 				DEVELOPMENT_TEAM = 5M7L7W2WHX;
 				ENABLE_PREVIEWS = YES;
@@ -487,7 +583,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hunterdobbapps.DonorTrack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -496,6 +592,44 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		B5A61DAA297ECD200065FADC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5M7L7W2WHX;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hunterdobbapps.DonorTrackTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DonorTrack.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DonorTrack";
+			};
+			name = Debug;
+		};
+		B5A61DAB297ECD200065FADC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5M7L7W2WHX;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hunterdobbapps.DonorTrackTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DonorTrack.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DonorTrack";
 			};
 			name = Release;
 		};
@@ -516,6 +650,15 @@
 			buildConfigurations = (
 				B51C4BC72972032900FEEF50 /* Debug */,
 				B51C4BC82972032900FEEF50 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B5A61DAC297ECD200065FADC /* Build configuration list for PBXNativeTarget "DonorTrackTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B5A61DAA297ECD200065FADC /* Debug */,
+				B5A61DAB297ECD200065FADC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
