@@ -31,8 +31,6 @@ struct NewDonationView: View {
     @FocusState private var focusedField: FocusedField?
     @State private var tmp = Date()
 	@State private var shouldShowSuccess = false
-
-//	let successfulAction: () -> Void
     
     enum FocusedField {
         case donationAmount, protein, compensation, notes
@@ -112,7 +110,6 @@ struct NewDonationView: View {
                     }
                 }
             }
-			// MARK: - Test
             .overlay(alignment: .bottom) {
                 if focusedField == nil {
                     actionButton

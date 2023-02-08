@@ -1,0 +1,80 @@
+{
+  "identifier" : "26BFAC0F",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "C843071A",
+      "localizations" : [
+        {
+          "description" : "🙂 Kind Tip",
+          "displayName" : "Kind Tip",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.hunterdobbapps.DonorTrack.kindTip",
+      "referenceName" : "KindTip",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "85B1F283",
+      "localizations" : [
+        {
+          "description" : "☺️ Great Tip",
+          "displayName" : "Great Tip",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.hunterdobbapps.DonorTrack.greatTip",
+      "referenceName" : "GreatTip",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "3.99",
+      "familyShareable" : false,
+      "internalID" : "777ADC54",
+      "localizations" : [
+        {
+          "description" : "🤩 Amazing Tip",
+          "displayName" : "Amazing Tip",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.hunterdobbapps.DonorTrack.amazingTip",
+      "referenceName" : "AmazingTip",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "7.99",
+      "familyShareable" : false,
+      "internalID" : "5E1D59D3",
+      "localizations" : [
+        {
+          "description" : "🤯 Outrageous Tip",
+          "displayName" : "Outrageous Tip",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.hunterdobbapps.DonorTrack.outrageousTip",
+      "referenceName" : "OutrageousTip",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_billingIssuesEnabled" : false,
+    "_failTransactionsEnabled" : false,
+    "_storeKitError" : 0
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 2,
+    "minor" : 0
+  }
+}

@@ -34,6 +34,11 @@
 		B5359EC5298EB5D400566111 /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5359EC4298EB5D400566111 /* Symbols.swift */; };
 		B5359EC7298EB94A00566111 /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5359EC6298EB94A00566111 /* UserDefaultKeys.swift */; };
 		B573232E297B384B003D0C3E /* DataField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573232D297B384B003D0C3E /* DataField.swift */; };
+		B595C04C29929B3600F80A68 /* TipJarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B595C04B29929B3600F80A68 /* TipJarView.swift */; };
+		B595C04E2992A80700F80A68 /* TipJarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B595C04D2992A80700F80A68 /* TipJarRow.swift */; };
+		B595C0512992A9B400F80A68 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B595C0502992A9B400F80A68 /* StoreKit.framework */; };
+		B595C0542992BBE700F80A68 /* TipProductIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B595C0532992BBE700F80A68 /* TipProductIdentifiers.swift */; };
+		B595C0562992BC7D00F80A68 /* TipStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B595C0552992BC7D00F80A68 /* TipStore.swift */; };
 		B5A61DAE297ECD6A0065FADC /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A61DAD297ECD6A0065FADC /* ModelTests.swift */; };
 		B5A61DB0297F261A0065FADC /* DTFormTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A61DAF297F261A0065FADC /* DTFormTextFieldStyle.swift */; };
 		B5CDFA97298DACE4005072BC /* CheckmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CDFA96298DACE4005072BC /* CheckmarkView.swift */; };
@@ -79,6 +84,12 @@
 		B5359EC4298EB5D400566111 /* Symbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
 		B5359EC6298EB94A00566111 /* UserDefaultKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultKeys.swift; sourceTree = "<group>"; };
 		B573232D297B384B003D0C3E /* DataField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataField.swift; sourceTree = "<group>"; };
+		B595C04B29929B3600F80A68 /* TipJarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipJarView.swift; sourceTree = "<group>"; };
+		B595C04D2992A80700F80A68 /* TipJarRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipJarRow.swift; sourceTree = "<group>"; };
+		B595C0502992A9B400F80A68 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		B595C0522992B73E00F80A68 /* MyTipsStoreKitConfig.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = MyTipsStoreKitConfig.storekit; sourceTree = "<group>"; };
+		B595C0532992BBE700F80A68 /* TipProductIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipProductIdentifiers.swift; sourceTree = "<group>"; };
+		B595C0552992BC7D00F80A68 /* TipStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipStore.swift; sourceTree = "<group>"; };
 		B5A61DA4297ECD200065FADC /* DonorTrackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DonorTrackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5A61DAD297ECD6A0065FADC /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
 		B5A61DAF297F261A0065FADC /* DTFormTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTFormTextFieldStyle.swift; sourceTree = "<group>"; };
@@ -90,6 +101,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B595C0512992A9B400F80A68 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +121,7 @@
 				B51C4BBA2972032800FEEF50 /* DonorTrack */,
 				B5A61DA5297ECD200065FADC /* DonorTrackTests */,
 				B51C4BB92972032800FEEF50 /* Products */,
+				B595C04F2992A9B400F80A68 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -179,6 +192,7 @@
 		B51C4BE62973839E00FEEF50 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				B595C04A29929B0D00F80A68 /* TipJar */,
 				B5359EC1298EAE2400566111 /* Settings */,
 				B51C4C012978CA4A00FEEF50 /* DonationDetail */,
 				B51C4BFE2978C70700FEEF50 /* EditDonation */,
@@ -214,6 +228,9 @@
 				B51C4BF42975EA4900FEEF50 /* HapticManager.swift */,
 				B5359EC4298EB5D400566111 /* Symbols.swift */,
 				B5359EC6298EB94A00566111 /* UserDefaultKeys.swift */,
+				B595C0522992B73E00F80A68 /* MyTipsStoreKitConfig.storekit */,
+				B595C0532992BBE700F80A68 /* TipProductIdentifiers.swift */,
+				B595C0552992BC7D00F80A68 /* TipStore.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -252,6 +269,23 @@
 				B5359EC2298EAE4600566111 /* SettingsView.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		B595C04A29929B0D00F80A68 /* TipJar */ = {
+			isa = PBXGroup;
+			children = (
+				B595C04B29929B3600F80A68 /* TipJarView.swift */,
+				B595C04D2992A80700F80A68 /* TipJarRow.swift */,
+			);
+			path = TipJar;
+			sourceTree = "<group>";
+		};
+		B595C04F2992A9B400F80A68 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B595C0502992A9B400F80A68 /* StoreKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		B5A61DA5297ECD200065FADC /* DonorTrackTests */ = {
@@ -374,20 +408,24 @@
 				B51C4BF92976EDD200FEEF50 /* DonationsListViewModel.swift in Sources */,
 				B51C4BF52975EA4900FEEF50 /* HapticManager.swift in Sources */,
 				B5CDFA97298DACE4005072BC /* CheckmarkView.swift in Sources */,
+				B595C04E2992A80700F80A68 /* TipJarRow.swift in Sources */,
 				B51C4BDC297215E700FEEF50 /* DonationDetailView.swift in Sources */,
 				B51C4BE32973008500FEEF50 /* ValueField.swift in Sources */,
 				B51C4BCA2972049800FEEF50 /* NewDonationView.swift in Sources */,
 				B51C4BD42972090900FEEF50 /* DonationEntity.swift in Sources */,
+				B595C0562992BC7D00F80A68 /* TipStore.swift in Sources */,
 				B5359EC3298EAE4600566111 /* SettingsView.swift in Sources */,
 				B51C4BDE2972F6E500FEEF50 /* TestView.swift in Sources */,
 				B51C4BEC2974BB6000FEEF50 /* NewDonationViewModel.swift in Sources */,
 				B5A61DB0297F261A0065FADC /* DTFormTextFieldStyle.swift in Sources */,
+				B595C04C29929B3600F80A68 /* TipJarView.swift in Sources */,
 				B51C4BE12972FD0B00FEEF50 /* View+Ext.swift in Sources */,
 				B51C4BEA29743E9A00FEEF50 /* Binding+Ext.swift in Sources */,
 				B5359EC5298EB5D400566111 /* Symbols.swift in Sources */,
 				B51C4BD22972056900FEEF50 /* DonationsDataModel.xcdatamodeld in Sources */,
 				B51C4BBC2972032800FEEF50 /* DonorTrackApp.swift in Sources */,
 				B51C4C002978C71D00FEEF50 /* EditDonationView.swift in Sources */,
+				B595C0542992BBE700F80A68 /* TipProductIdentifiers.swift in Sources */,
 				B51C4BDA297212F600FEEF50 /* DonationRowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -461,7 +499,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -515,7 +553,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -548,7 +586,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hunterdobbapps.DonorTrack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -583,7 +621,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hunterdobbapps.DonorTrack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
