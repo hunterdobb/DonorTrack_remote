@@ -41,6 +41,7 @@
 		B595C0562992BC7D00F80A68 /* TipStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B595C0552992BC7D00F80A68 /* TipStore.swift */; };
 		B5A61DAE297ECD6A0065FADC /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A61DAD297ECD6A0065FADC /* ModelTests.swift */; };
 		B5A61DB0297F261A0065FADC /* DTFormTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A61DAF297F261A0065FADC /* DTFormTextFieldStyle.swift */; };
+		B5C208E329B7AFAD00CFEFDD /* DonorTrack.docc in Sources */ = {isa = PBXBuildFile; fileRef = B5C208E229B7AFAD00CFEFDD /* DonorTrack.docc */; };
 		B5CDFA97298DACE4005072BC /* CheckmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CDFA96298DACE4005072BC /* CheckmarkView.swift */; };
 /* End PBXBuildFile section */
 
@@ -93,6 +94,7 @@
 		B5A61DA4297ECD200065FADC /* DonorTrackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DonorTrackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5A61DAD297ECD6A0065FADC /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
 		B5A61DAF297F261A0065FADC /* DTFormTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTFormTextFieldStyle.swift; sourceTree = "<group>"; };
+		B5C208E229B7AFAD00CFEFDD /* DonorTrack.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = DonorTrack.docc; sourceTree = "<group>"; };
 		B5CDFA96298DACE4005072BC /* CheckmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckmarkView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -148,6 +150,7 @@
 				B51C4BDD2972F6E500FEEF50 /* TestView.swift */,
 				B51C4BBF2972032900FEEF50 /* Assets.xcassets */,
 				B51C4BC12972032900FEEF50 /* Preview Content */,
+				B5C208E229B7AFAD00CFEFDD /* DonorTrack.docc */,
 			);
 			path = DonorTrack;
 			sourceTree = "<group>";
@@ -409,6 +412,7 @@
 				B51C4BF52975EA4900FEEF50 /* HapticManager.swift in Sources */,
 				B5CDFA97298DACE4005072BC /* CheckmarkView.swift in Sources */,
 				B595C04E2992A80700F80A68 /* TipJarRow.swift in Sources */,
+				B5C208E329B7AFAD00CFEFDD /* DonorTrack.docc in Sources */,
 				B51C4BDC297215E700FEEF50 /* DonationDetailView.swift in Sources */,
 				B51C4BE32973008500FEEF50 /* ValueField.swift in Sources */,
 				B51C4BCA2972049800FEEF50 /* NewDonationView.swift in Sources */,
@@ -572,6 +576,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DonorTrack/Preview Content\"";
 				DEVELOPMENT_TEAM = 5M7L7W2WHX;
+				DOCC_HOSTING_BASE_PATH = DonorTrack_remote;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DonorTrack/Info.plist;
@@ -607,6 +612,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DonorTrack/Preview Content\"";
 				DEVELOPMENT_TEAM = 5M7L7W2WHX;
+				DOCC_HOSTING_BASE_PATH = DonorTrack_remote;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DonorTrack/Info.plist;
