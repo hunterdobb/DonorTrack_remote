@@ -66,6 +66,11 @@ struct NewDonationView: View {
 
 						}
 					}
+					.onAppear {
+						// This fixes a bug where the check mark after saving would stay on the
+						// screen if the user quickly changed tabs.
+						shouldShowSuccess = false
+					}
 					.overlay {
 						if shouldShowSuccess {
 							CheckmarkView()

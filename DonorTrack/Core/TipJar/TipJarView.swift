@@ -20,21 +20,9 @@ struct TipJarView: View {
 					TipJarRow(item: item)
 				}
 			}
-//			.alert("Thank You! 😀", isPresented: $showThanks) {
-//				Button("Done") {}
-//			} message: {
-//				Text("Thank you so much for your support!")
-//					.foregroundColor(.indigo)
-//			}
 			.alert(isPresented: $store.hasError, error: store.error) {}
 		}
 		.navigationBarTitleDisplayMode(.inline)
-//		.onChange(of: store.action) { action in
-//			if action == .successful {
-//				showThanks = true
-//				store.reset()
-//			}
-//		}
 	}
 }
 
