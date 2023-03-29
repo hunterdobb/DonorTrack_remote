@@ -54,6 +54,8 @@ extension EditDonationView {
 
         }
 
+		/// This function update the start and end times date when the user changes the date of a donation
+		/// - Parameter newValue: The new date the user selected
         func updateDay(with newValue: Date) {
             let calendar = Calendar.current
             let newComponents = calendar.dateComponents([.month, .day, .year], from: newValue)

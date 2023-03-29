@@ -32,7 +32,10 @@ struct DonationRowView: View {
                 dateAndTimeInfo
                 Spacer()
                 HStack(spacing: 8){
-                    Text("\(donation.protein, specifier: "%.1f")")
+					HStack(spacing: 0) {
+                    	Text("\(donation.protein, specifier: "%.1f")")
+//						Text(" g/dL")
+                    }
 					Symbols.chevronforward
                         .foregroundColor(.secondary.opacity(0.6))
                 }
