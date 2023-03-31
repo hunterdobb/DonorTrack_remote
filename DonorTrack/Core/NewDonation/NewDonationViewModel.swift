@@ -54,6 +54,8 @@ extension NewDonationView {
             case idle = 0, started, finished
         }
 
+		@EnvironmentObject private var reviewsManager: ReviewRequestManager
+
         init(provider: DonationsProvider, donation: DonationEntity? = nil) {
             self.provider = provider
             self.context = provider.newContext

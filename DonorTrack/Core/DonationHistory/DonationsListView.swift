@@ -5,8 +5,10 @@
 //  Created by Hunter Dobbelmann on 1/13/23.
 //
 
+import StoreKit
 import SwiftUI
 
+// TODO: refactor this
 struct WhiteGroupBoxStyle: GroupBoxStyle {
 	func makeBody(configuration: Configuration) -> some View {
 		VStack(spacing: 0) {
@@ -44,6 +46,10 @@ struct DonationsListView: View {
 		let total = compensations.reduce(0, +)
 		return "$\(total)"
 	}
+
+	// Environment value to call as a function to trigger review dialog
+	@Environment(\.requestReview) var requestReview: RequestReviewAction
+	@EnvironmentObject private var reviewsManager: ReviewRequestManager
 
 	var body: some View {
 		NavigationStack {
@@ -217,7 +223,11 @@ struct DonationsListView: View {
 			} content: { donation in
 				EditDonationView(vm: .init(provider: vm.provider, donation: donation))
 			}
-
+			.onAppear {
+				if reviewsManager.canAskForReview(donationCount: donations.count) {
+					requestReview()
+				}
+			}
 		}
 	}
 }
@@ -225,15 +235,16 @@ struct DonationsListView: View {
 struct DonationsListView_Previews: PreviewProvider {
 	static var previews: some View {
 		let preview = DonationsProvider.shared
-
 		DonationsListView(vm: .init(provider: .shared))
 			.environment(\.managedObjectContext, preview.viewContext)
+			.environmentObject(ReviewRequestManager())
 			.previewDisplayName("List With Data")
 			.onAppear { DonationEntity.makePreview(count: 10, in: preview.viewContext) }
 
 		let emptyPreview = DonationsProvider.shared
 		DonationsListView(vm: .init(provider: .shared))
 			.environment(\.managedObjectContext, emptyPreview.viewContext)
+			.environmentObject(ReviewRequestManager())
 			.previewDisplayName("List With No Data")
 	}
 }
