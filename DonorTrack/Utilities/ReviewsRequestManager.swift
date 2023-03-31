@@ -13,7 +13,7 @@ final class ReviewRequestManager: ObservableObject {
 	private let userDefaults: UserDefaults
 	private(set) var reviewLink = URL(string: "https://apps.apple.com/app/id1667108011?action=write-review")
 	
-	let limit = 5
+	let limit = 10
 
 	init(userDefaults: UserDefaults = .standard) {
 		self.userDefaults = userDefaults
@@ -38,7 +38,7 @@ final class ReviewRequestManager: ObservableObject {
 		guard let currentVersion = currentVersion
 			else { fatalError("Expected to find a bundle version in the info dictionary.") }
 
-		let hasReachedThreshold = donationCount.isMultiple(of: limit)
+		let hasReachedThreshold = donationCount.isMultiple(of: limit) && (donationCount != 0)
 		let isNewVersion = currentVersion != lastVersionPromptedForReview
 
 		guard hasReachedThreshold && isNewVersion else { return false }

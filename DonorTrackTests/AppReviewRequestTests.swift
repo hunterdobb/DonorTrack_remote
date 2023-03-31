@@ -29,9 +29,9 @@ final class AppReviewRequestTests: XCTestCase {
 	}
 
 	func testAppIsInvalidForRequestOnFreshLaunch() {
-		let limit = sut.limit - 1
+		let limit = 0
 		XCTAssertFalse(sut.canAskForReview(donationCount: limit),
-					  "The user hasn't reached the limit (\(limit)) they shouldn't be prompted to review")
+					   "The user hasn't reached the limit (\(sut.limit)) they shouldn't be prompted to review")
 	}
 
 	func testAppIsInvalidForRequestAfterLimitReached() {
