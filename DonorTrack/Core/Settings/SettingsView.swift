@@ -65,18 +65,13 @@ private extension SettingsView {
 			TipJarView()
 				.environmentObject(store)
 		} label: {
-			HStack {
+			HStack(alignment: .lastTextBaseline) {
 				Image(systemName: "bag.fill")
-					.foregroundColor(.white)
-					.padding(5)
-					.background {
-						RoundedRectangle(cornerRadius: 7)
-							.foregroundStyle(.indigo)
-							.aspectRatio(CGSize(width: 1, height: 1), contentMode: .fit)
-					}
+					.foregroundStyle(.indigo.gradient)
+					.imageScale(.large)
 
 				Text("Tip Jar")
-					.font(.system(.headline, design: .rounded))
+					.font(.system(.body, design: .rounded))
 			}
 		}
 	}
@@ -87,18 +82,13 @@ private extension SettingsView {
 				openURL(url)
 			}
 		} label: {
-			HStack {
-				Image(systemName: "heart.fill")
-					.foregroundColor(.white)
-					.padding(5)
-					.background {
-						RoundedRectangle(cornerRadius: 7)
-							.foregroundStyle(.red)
-							.aspectRatio(CGSize(width: 1, height: 1), contentMode: .fit)
-					}
+			HStack(alignment: .lastTextBaseline) {
+				Image(systemName: "heart.circle.fill")
+					.foregroundStyle(.red.gradient)
+					.imageScale(.large)
 
 				Text("Rate Donor Track")
-					.font(.system(.headline, design: .rounded))
+					.font(.system(.body, design: .rounded))
 					.foregroundColor(.primary)
 
 				Spacer()
@@ -106,7 +96,6 @@ private extension SettingsView {
 				Image(systemName: "arrow.up.right")
 					.fontWeight(.medium)
 					.imageScale(.small)
-//					.foregroundStyle(.tertiary)
 					.foregroundColor(.secondary.opacity(0.6))
 
 			}
