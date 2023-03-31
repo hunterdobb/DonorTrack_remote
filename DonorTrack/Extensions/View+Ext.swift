@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 extension View {
-    // Add custome placeholder to TextField
+    // Add custom placeholder to TextField
     func placeholder<Content: View>(
         _ shouldShow: Bool,
         alignment: Alignment = .leading,

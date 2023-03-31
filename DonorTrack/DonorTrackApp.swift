@@ -10,9 +10,11 @@ import SwiftUI
 @main
 struct DonorTrackApp: App {
 	@StateObject private var store = TipStore()
+	@StateObject private var reviewsManager = ReviewRequestManager()
 	@State private var showThanks = false
 
 	init() {
+		// Enables haptics on first run
 		UserDefaults.standard.register(defaults: [
 			UDKeys.hapticsEnabled: true
 		])
@@ -21,6 +23,7 @@ struct DonorTrackApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+				.environmentObject(reviewsManager)
                 .environment(\.managedObjectContext, DonationsProvider.shared.viewContext)
 				.environmentObject(store)
 				.alert("Thank You! 😀", isPresented: $showThanks) {
