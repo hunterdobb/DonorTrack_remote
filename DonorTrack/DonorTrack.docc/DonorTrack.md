@@ -4,7 +4,7 @@ An app to track your plasma donations
 
 ## Overview
 
-Donor Track is an iOS app the allows users to track their plasma donations.
+Donor Track is an iOS app that allows users to track their plasma donations.
 The items that can currently be tracked include:
 * Start time
 * End time
