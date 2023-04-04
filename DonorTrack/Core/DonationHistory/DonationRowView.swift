@@ -30,24 +30,18 @@ struct DonationRowView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 dateAndTimeInfo
+
                 Spacer()
-                HStack(spacing: 8){
-					HStack(spacing: 0) {
-                    	Text("\(donation.protein, specifier: "%.1f")")
-//						Text(" g/dL")
-                    }
+
+                HStack(spacing: 8) {
+					Text("\(donation.protein, specifier: "%.1f")")
+
 					Symbols.chevronforward
                         .foregroundColor(.secondary.opacity(0.6))
                 }
             }
 
-            if showNotes && !donation.notes.isEmpty {
-                Text(donation.notes)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .padding(5)
-                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 5))
-            }
+			donationNote
         }
     }
 }
@@ -88,4 +82,15 @@ extension DonationRowView {
             }
         }
     }
+
+	@ViewBuilder
+	private var donationNote: some View {
+		if showNotes && !donation.notes.isEmpty {
+			Text(donation.notes)
+				.font(.caption)
+				.foregroundColor(.secondary)
+				.padding(5)
+				.background(.regularMaterial, in: RoundedRectangle(cornerRadius: 5))
+		}
+	}
 }

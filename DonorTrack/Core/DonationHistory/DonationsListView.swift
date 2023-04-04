@@ -8,22 +8,6 @@
 import StoreKit
 import SwiftUI
 
-// TODO: refactor this
-struct WhiteGroupBoxStyle: GroupBoxStyle {
-	func makeBody(configuration: Configuration) -> some View {
-		VStack(spacing: 0) {
-			configuration.label
-				.font(.headline)
-				.frame(maxWidth: .infinity, alignment: .leading)
-
-			configuration.content
-		}
-		.padding(8)
-		.background(Color("ListRowColor"),
-					in: RoundedRectangle(cornerRadius: 8, style: .continuous))
-	}
-}
-
 struct DonationsListView: View {
 	@ObservedObject var vm: ViewModel
 
@@ -55,8 +39,7 @@ struct DonationsListView: View {
 		NavigationStack {
 			ZStack {
 				if donations.isEmpty && vm.searchConfig.query.isEmpty {
-					emptyStateView
-						.padding(.bottom, 100)
+					emptyStateView.padding(.bottom, 100)
 				} else if donations.isEmpty && !vm.searchConfig.query.isEmpty {
 					Text("No Results")
 						.frame(maxHeight: .infinity, alignment: .top)
@@ -64,142 +47,50 @@ struct DonationsListView: View {
 				} else {
 					VStack {
 						List {
-							// TODO: Implement totals at top of list
 							if vm.searchConfig.query.isEmpty && vm.searchConfig.filter == .all {
 								Section {
 									HStack {
-										GroupBox {
-											Text(totalEarnedAllTime())
-												.font(.system(.title, design: .rounded, weight: .bold))
-												.frame(maxWidth: .infinity, alignment: .leading)
-												.padding(.top, 1)
-										} label: {
-											Text("Compensation")
-												.foregroundStyle(.green)
-										}
-										.frame(maxWidth: .infinity)
-										.groupBoxStyle(WhiteGroupBoxStyle())
-
-
-										GroupBox {
-											Text("\(donations.count)")
-												.font(.system(.title, design: .rounded, weight: .bold))
-
-												.frame(maxWidth: .infinity, alignment: .leading)
-												.padding(.top, 1)
-										} label: {
-											Text("Donations")
-												.foregroundStyle(.orange)
-										}
-										.frame(maxWidth: .infinity)
-										.groupBoxStyle(WhiteGroupBoxStyle())
+										totalCompensation
+										totalDonations
 									}
 									.listRowBackground(Color.clear)
 									.listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
 									.listRowSeparator(.hidden)
-								} header: {
-									Text("Totals")
-										.foregroundColor(.secondary)
-										.font(.headline)
-										.bold()
-								}
+								} header: { totalHeader }
 								.textCase(nil)
 							}
+
 							ForEach(groupByMonth(donations), id: \.self) { (months: [DonationEntity]) in
 								Section { // header below, shows month
 									ForEach(months) { donation in
 										// Workaround to hide default list indicator
 										// I do this so I can move to upper right corner
-										ZStack(alignment: .leading){
+										ZStack(alignment: .leading) {
 											NavigationLink(value: donation) {
 												EmptyView()
+											}.opacity(0)
 
-											}
-											.opacity(0)
-
-											DonationRowView(donation: donation, provider: vm.provider, showNotes: $vm.showNotes)
-
-											//                                    .contextMenu {
-											//                                        menuButtons
-											//                                    }
+											DonationRowView(donation: donation,
+															provider: vm.provider,
+															showNotes: $vm.showNotes)
 												.swipeActions(allowsFullSwipe: false) {
-													Button(role: .destructive) {
-														do {
-															// using provider.newContext is safer and prevents crashing
-															try vm.provider.delete(donation, in: vm.provider.newContext)
-														} catch {
-															print(error)
-														}
-													} label: {
-														Label("Delete", systemImage: "trash")
-													}
-
-													Button {
-														vm.donationToEdit = donation
-													} label: {
-														Label("Edit", systemImage: "pencil")
-													}
-													.tint(.orange)
+													deleteButton(donation: donation)
+													editButton(donation: donation)
 												}
-
 										}
 									}
-								} header: {
-									let isSameYear = Calendar.current.isDate(months[0].startTime, equalTo: .now, toGranularity: .year)
-									let yearText = isSameYear ? "" : ", \(months[0].startTime.formatted(.dateTime.year()))"
-
-									Text("\(months[0].startTime, format: .dateTime.month(.wide))\(yearText)")
-										.foregroundColor(.secondary)
-										.font(.headline)
-										.bold()
-								}
+								} header: { monthHeader(months: months) }
 								.textCase(nil)
 							}
 						}
-						if vm.searchConfig.filter == .lowProtein {
-							HStack {
-								Symbols.exclamationmarkCircle
-								Text("Filtered by Low Protein")
-							}
-							.padding(.bottom, 20)
-							.foregroundColor(.orange)
-							.font(.headline)
-						}
 
+						filterNotifier
 					}
-					//                    .background(.regularMaterial)
-
 				}
 			}
 			.searchable(text: $vm.searchConfig.query, prompt: "Search Notes")
 			.toolbar {
-				ToolbarItem(placement: .automatic) {
-					Menu {
-						Picker("Sort", selection: $vm.sort) {
-							Text("Newest First").tag(Sort.newestFirst)
-							Text("Oldest First").tag(Sort.oldestFirst)
-						}
-
-						Picker("Filter Donations", selection: $vm.searchConfig.filter) {
-							Label("Show All", systemImage: "list.bullet")
-								.tag(SearchConfig.Filter.all)
-
-							Label("Show Low Protein", systemImage: "drop.triangle")
-								.tag(SearchConfig.Filter.lowProtein)
-						}
-
-						Button {
-							vm.donationToEdit = .empty(context: DonationsProvider.shared.newContext)
-						} label: {
-							Label("Add Donation Manually", systemImage: "keyboard")
-						}
-					} label: {
-						Label("Options", systemImage: vm.searchConfig.filter == .lowProtein ?
-							  "ellipsis.circle.fill" : "ellipsis.circle")
-						.foregroundColor(vm.searchConfig.filter == .lowProtein ? .orange : .blue)
-						.font(.title3)
-					}
-				}
+				ToolbarItem { optionsMenu }
 			}
 			.navigationDestination(for: DonationEntity.self) { donation in
 				DonationDetailView(donation: donation, provider: vm.provider)
@@ -218,8 +109,7 @@ struct DonationsListView: View {
 			}
 			.navigationTitle("Donations")
 			.sheet(item: $vm.donationToEdit) {
-				// onDismiss
-				vm.donationToEdit = nil
+				vm.donationToEdit = nil // onDismiss
 			} content: { donation in
 				EditDonationView(vm: .init(provider: vm.provider, donation: donation))
 			}
@@ -232,6 +122,7 @@ struct DonationsListView: View {
 	}
 }
 
+// MARK: - Preview
 struct DonationsListView_Previews: PreviewProvider {
 	static var previews: some View {
 		let preview = DonationsProvider.shared
@@ -249,6 +140,7 @@ struct DonationsListView_Previews: PreviewProvider {
 	}
 }
 
+// MARK: - Views
 extension DonationsListView {
 	private var emptyStateView: some View {
 		VStack(spacing: 15) {
@@ -279,34 +171,113 @@ extension DonationsListView {
 		.padding()
 	}
 
-	private var totalEarnedView: some View {
-		Text(totalEarnedAllTime())
-			.font(.system(.title, design: .rounded, weight: .bold))
-			.foregroundColor(.green)
-			.padding()
-			.listRowBackground(Color.clear)
-			.listRowSeparator(.hidden)
-			.background {
-				RoundedRectangle(cornerRadius: 10)
-					.foregroundColor(.white)
-			}
-			.offset(x: -15, y: 10)
+	private var totalHeader: some View {
+		Text("Totals")
+			.foregroundColor(.secondary)
+			.font(.headline)
+			.bold()
 	}
 
-	private var menuButtons: some View {
-		Group {
-			Button(role: .destructive) {
-
-			} label: {
-				Label("Delete", systemImage: "trash")
-			}
-
-			Button() {
-				print("Enable geolocation")
-			} label: {
-				Label("Edit", systemImage: "pencil")
-			}
-			.tint(.orange)
+	private var totalCompensation: some View {
+		GroupBox {
+			Text(totalEarnedAllTime())
+				.font(.system(.title, design: .rounded, weight: .bold))
+				.frame(maxWidth: .infinity, alignment: .leading)
+				.padding(.top, 1)
+		} label: {
+			Text("Compensation")
+				.foregroundStyle(.green)
 		}
+		.frame(maxWidth: .infinity)
+		.groupBoxStyle(WhiteGroupBoxStyle())
+	}
+
+	private var totalDonations: some View {
+		GroupBox {
+			Text("\(donations.count)")
+				.font(.system(.title, design: .rounded, weight: .bold))
+
+				.frame(maxWidth: .infinity, alignment: .leading)
+				.padding(.top, 1)
+		} label: {
+			Text("Donations")
+				.foregroundStyle(.orange)
+		}
+		.frame(maxWidth: .infinity)
+		.groupBoxStyle(WhiteGroupBoxStyle())
+	}
+
+	@ViewBuilder
+	private var filterNotifier: some View {
+		if vm.searchConfig.filter == .lowProtein {
+			HStack {
+				Symbols.exclamationmarkCircle
+				Text("Filtered by Low Protein")
+			}
+			.padding(.bottom, 20)
+			.foregroundColor(.orange)
+			.font(.headline)
+		}
+	}
+
+	private var optionsMenu: some View {
+		Menu {
+			Picker("Sort", selection: $vm.sort) {
+				Text("Newest First").tag(Sort.newestFirst)
+				Text("Oldest First").tag(Sort.oldestFirst)
+			}
+
+			Picker("Filter Donations", selection: $vm.searchConfig.filter) {
+				Label("Show All", systemImage: "list.bullet")
+					.tag(SearchConfig.Filter.all)
+
+				Label("Show Low Protein", systemImage: "drop.triangle")
+					.tag(SearchConfig.Filter.lowProtein)
+			}
+
+			Button {
+				vm.donationToEdit = .empty(context: DonationsProvider.shared.newContext)
+			} label: {
+				Label("Add Donation Manually", systemImage: "keyboard")
+			}
+		} label: {
+			Label("Options", systemImage: vm.searchConfig.filter == .lowProtein ?
+				  "ellipsis.circle.fill" : "ellipsis.circle")
+			.foregroundColor(vm.searchConfig.filter == .lowProtein ? .orange : .blue)
+			.font(.title3)
+		}
+	}
+
+	@ViewBuilder
+	private func monthHeader(months: [DonationEntity]) -> some View {
+		let isSameYear = Calendar.current.isDate(months[0].startTime, equalTo: .now, toGranularity: .year)
+		let yearText = isSameYear ? "" : ", \(months[0].startTime.formatted(.dateTime.year()))"
+
+		Text("\(months[0].startTime, format: .dateTime.month(.wide))\(yearText)")
+			.foregroundColor(.secondary)
+			.font(.headline)
+			.bold()
+	}
+
+	private func deleteButton(donation: DonationEntity) -> some View {
+		Button(role: .destructive) {
+			do {
+				// using provider.newContext is safer and prevents crashing
+				try vm.provider.delete(donation, in: vm.provider.newContext)
+			} catch {
+				print(error)
+			}
+		} label: {
+			Label("Delete", systemImage: "trash")
+		}
+	}
+
+	private func editButton(donation: DonationEntity) -> some View {
+		Button {
+			vm.donationToEdit = donation
+		} label: {
+			Label("Edit", systemImage: "pencil")
+		}
+		.tint(.orange)
 	}
 }
