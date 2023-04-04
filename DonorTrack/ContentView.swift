@@ -31,10 +31,6 @@ struct ContentView: View {
 				}
         }
         .dynamicTypeSize(.xSmall ... .xxxLarge)
-		.onAppear {
-			print("Haptics: \(UserDefaults.standard.bool(forKey: UDKeys.hapticsEnabled))")
-		}
-
     }
 }
 

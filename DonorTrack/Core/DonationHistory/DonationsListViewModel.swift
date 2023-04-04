@@ -6,7 +6,7 @@
 //
 
 import CoreData
-import Foundation
+import SwiftUI
 
 struct SearchConfig: Equatable {
     enum Filter {
@@ -38,5 +38,23 @@ extension DonationsListView {
             self.provider = provider
             self.context = provider.viewContext
         }
+
+		func groupDonationsByMonth(_ result: FetchedResults<DonationEntity>) -> [[DonationEntity]] {
+			Dictionary(grouping: result) { (donation: DonationEntity) in
+				donation.startTime.month
+			}.values.sorted {
+				if sort == .newestFirst {
+					return $0[0].startTime > $1[0].startTime
+				} else {
+					return $0[0].startTime < $1[0].startTime
+				}
+			}
+		}
+
+		func totalEarnedAllTime(_ donations: FetchedResults<DonationEntity>) -> String {
+			let compensations = donations.map { Int($0.compensation) }
+			let total = compensations.reduce(0, +)
+			return "$\(total)"
+		}
     }
 }

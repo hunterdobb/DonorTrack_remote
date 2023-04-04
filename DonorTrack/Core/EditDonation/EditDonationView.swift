@@ -159,7 +159,7 @@ struct EditDonationView_Previews: PreviewProvider {
         let previewProvider = DonationsProvider.shared
         NavigationStack {
             // This doesn't fully work bc in the vm we use provider.newContext, so they're accessing
-            // seperate contexts.
+            // separate contexts.
             // As a work around I added the preview bool to use the provider.viewContext instead.
             // For it to fully work, I somehow need to create the preview data on the same newContext used
             // in the vm
