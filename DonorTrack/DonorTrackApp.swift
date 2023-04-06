@@ -5,6 +5,7 @@
 //  Created by Hunter Dobbelmann on 1/13/23.
 //
 
+//import ActivityKit
 import SwiftUI
 
 @main
@@ -38,6 +39,18 @@ struct DonorTrackApp: App {
 						store.reset()
 					}
 				}
+//				.onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification), perform: { output in
+//					if #available(iOS 16.2, *) {
+//						let finishedDonationStatus = NewDonationAttributes.NewDonationStatus(startTime: .now, cycleCount: 0)
+//						let finalContent = ActivityContent(state: finishedDonationStatus, staleDate: nil)
+//
+//						Task {
+//							for activity in Activity<NewDonationAttributes>.activities {
+//								await activity.end(finalContent, dismissalPolicy: .immediate)
+//							}
+//						}
+//					}
+//				})
         }
     }
 }

@@ -357,7 +357,7 @@ extension NewDonationView {
                     Spacer()
                     if vm.donationState == .started {
                         Text(startTime, style: .timer)
-                            .font(.system(.body, design: .monospaced))
+                            .monospacedDigit()
                             .bold()
                             .foregroundColor(.secondary)
                     } else {
