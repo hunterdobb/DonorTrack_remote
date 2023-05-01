@@ -9,7 +9,7 @@ import XCTest
 @testable import DonorTrack
 
 final class ModelTests: XCTestCase {
-    private var provider: DonationsProvider!
+    private var provider: DataController!
 
     override func setUp() {
         provider = .shared

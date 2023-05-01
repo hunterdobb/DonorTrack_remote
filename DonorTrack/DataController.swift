@@ -1,5 +1,5 @@
 //
-//  DonationsProvider.swift
+//  DataController.swift
 //  DonorTrack
 //
 //  Created by Hunter Dobbelmann on 1/13/23.
@@ -10,28 +10,28 @@ import SwiftUI
 
 // provider.viewContext is the main context
 
-final class DonationsProvider {
-    static let shared = DonationsProvider()
+final class DataController {
+    static let shared = DataController()
 
-    private let persistentContainer: NSPersistentContainer
+    private let container: NSPersistentContainer
 
     var viewContext: NSManagedObjectContext {
-        persistentContainer.viewContext
+        container.viewContext
     }
 
     var newContext: NSManagedObjectContext {
-        persistentContainer.newBackgroundContext()
+        container.newBackgroundContext()
     }
 
     private init() {
-        persistentContainer = NSPersistentContainer(name: "DonationsDataModel")
+        container = NSPersistentContainer(name: "DonationsDataModel")
 
         if EnvironmentValues.isPreview || Thread.current.isRunningXCTest {
-            persistentContainer.persistentStoreDescriptions.first?.url = .init(fileURLWithPath: "/dev/null")
+            container.persistentStoreDescriptions.first?.url = .init(fileURLWithPath: "/dev/null")
         }
 
-        persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
-        persistentContainer.loadPersistentStores { _, error in
+        container.viewContext.automaticallyMergesChangesFromParent = true
+        container.loadPersistentStores { _, error in
             if let error {
                 fatalError("Unable to load store with error: \(error)")
             }

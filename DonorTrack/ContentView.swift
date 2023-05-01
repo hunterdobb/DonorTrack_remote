@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    var provider = DonationsProvider.shared
+    var provider = DataController.shared
     
     var body: some View {
         TabView {
@@ -36,7 +36,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let preview = DonationsProvider.shared
+        let preview = DataController.shared
         ContentView(provider: preview)
             .environment(\.managedObjectContext, preview.viewContext)
             .onAppear { DonationEntity.makePreview(count: 10, in: preview.viewContext) }

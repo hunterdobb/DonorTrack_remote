@@ -22,7 +22,7 @@ struct DonationRowView: View {
     // we would need to mark our donation object as an ObservedObject
     // so the views re-draw
     @ObservedObject var donation: DonationEntity
-    let provider: DonationsProvider
+    let provider: DataController
 
     @Binding var showNotes: Bool
 
@@ -48,7 +48,7 @@ struct DonationRowView: View {
 
 struct DonationRowView_Previews: PreviewProvider {
     static var previews: some View {
-        let previewProvider = DonationsProvider.shared
+        let previewProvider = DataController.shared
         DonationRowView(donation: .preview(context: previewProvider.viewContext),
                         provider: previewProvider, showNotes: .constant(true))
             .padding()

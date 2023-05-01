@@ -16,9 +16,7 @@ struct TipJarView: View {
 			icon
 			description
 			List {
-				ForEach(store.items) { item in
-					TipJarRow(item: item)
-				}
+				ForEach(store.items) { TipJarRow(item: $0) }
 			}
 			.alert(isPresented: $store.hasError, error: store.error) {}
 		}
@@ -30,6 +28,7 @@ struct TipJarView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
         	TipJarView()
+				.navigationTitle("Tip Jar")
 				.environmentObject(TipStore())
         }
     }
@@ -50,12 +49,4 @@ private extension TipJarView {
 			.padding(.horizontal, 32)
 			.font(.system(.body, design: .rounded, weight: .medium))
 	}
-
-//	@ViewBuilder
-//	var tipButtons: some View {
-//		TipJarRow(title: "🙂 Kind Tip", amount: "$0.99")
-//		TipJarRow(title: "☺️ Great Tip", amount: "$1.99")
-//		TipJarRow(title: "🤩 Amazing Tip", amount: "$3.99")
-//		TipJarRow(title: "🤯 Outrageous Tip", amount: "$7.99")
-//	}
 }

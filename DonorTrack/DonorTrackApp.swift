@@ -25,8 +25,9 @@ struct DonorTrackApp: App {
         WindowGroup {
             ContentView()
 				.environmentObject(reviewsManager)
-                .environment(\.managedObjectContext, DonationsProvider.shared.viewContext)
+                .environment(\.managedObjectContext, DataController.shared.viewContext)
 				.environmentObject(store)
+				// TODO: This alert should probably be moved
 				.alert("Thank You! 😀", isPresented: $showThanks) {
 					Button("Done") {}
 				} message: {
@@ -39,18 +40,6 @@ struct DonorTrackApp: App {
 						store.reset()
 					}
 				}
-//				.onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification), perform: { output in
-//					if #available(iOS 16.2, *) {
-//						let finishedDonationStatus = NewDonationAttributes.NewDonationStatus(startTime: .now, cycleCount: 0)
-//						let finalContent = ActivityContent(state: finishedDonationStatus, staleDate: nil)
-//
-//						Task {
-//							for activity in Activity<NewDonationAttributes>.activities {
-//								await activity.end(finalContent, dismissalPolicy: .immediate)
-//							}
-//						}
-//					}
-//				})
         }
     }
 }

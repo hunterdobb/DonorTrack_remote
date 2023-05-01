@@ -9,19 +9,9 @@ import Combine
 import SwiftUI
 
 /*
- - First view to create your object must use @StateObject, to tell SwiftUI it is the owner of the data and is responsible for keeping it alive.
-
- - All other views must use @ObservedObject, to tell SwiftUI they want to watch the object for changes but don’t own it directly.
- ----------
- - Use @ObservedObject for complex properties that might belong to several views. Most times you’re using a reference type you should be using @ObservedObject for it.
-
- - Use @StateObject once for each observable object you use, in whichever part of your code is responsible for creating it.
-
- ----------
-
  init(dataController: DataController) {
- let viewModel = ViewModel(dataController: dataController)
- _viewModel = StateObject(wrappedValue: viewModel)
+	let viewModel = ViewModel(dataController: dataController)
+	_viewModel = StateObject(wrappedValue: viewModel)
  }
  */
 
@@ -41,21 +31,24 @@ struct NewDonationView: View {
             ScrollViewReader { value in
                 ScrollView {
                     VStack(alignment: .leading) {
+//						if vm.donationState == .idle {
+//							startDonationTip.padding(.bottom)
+//						} else {
+//							donatingNowInfo.padding(.bottom)
+//						}
+
+						donatingNowInfo
+							.padding(.bottom, 8)
+							.padding(.top, -8)
                         valueFields
-                        if vm.donationState == .idle {
-                            startDonationTip
-                        } else {
-                            cycleCountView
-                            donatingNowInfo
-                        }
 
-                        donationDuration
-                        notesField
-                            .padding(.top)
+						if vm.donationState != .idle {
+							cycleCountView
+						}
 
-                        if focusedField == nil {
-                            scrollSpacer
-                        }
+						notesField.padding(.top)
+
+                        if focusedField == nil { scrollSpacer }
                     }
 					.onChange(of: vm.isSaved) { isSaved in
 						if isSaved {
@@ -121,7 +114,7 @@ struct NewDonationView: View {
                 }
             }
             .navigationTitle("New Donation")
-            .navigationBarTitleDisplayMode(.inline)
+//            .navigationBarTitleDisplayMode(.inline)
             .scrollDismissesKeyboard(.automatic)
             .alert(vm.alertTitle, isPresented: $vm.showingNotFilledInAlert) { }
             .alert(vm.alertTitle, isPresented: $vm.showingFinishConfirmationAlert) {
@@ -163,7 +156,7 @@ struct NewDonationView: View {
 struct NewDonationView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            let preview = DonationsProvider.shared
+            let preview = DataController.shared
 			NewDonationView(vm: .init(provider: preview))
                 .environment(\.managedObjectContext, preview.viewContext)
         }
@@ -175,6 +168,9 @@ extension NewDonationView {
     private var valueFields: some View {
         VStack(alignment: .leading) {
             Text("Enter Donation Info")
+				.padding(.bottom, -2)
+				.padding(.leading, 8)
+				.foregroundColor(.secondary)
                 .font(.headline)
 
             ValueField(text: $vm.amountText, label: "Donation Amount", placeholder: "0", suffix: "mL", color: .cyan)
@@ -192,7 +188,6 @@ extension NewDonationView {
                     vm.donation.amountDonated = amountDonated
                 }
 
-            ViewThatFits {
                 HStack {
                     ValueField(text: $vm.proteinText, label: "Protein", placeholder: "0.0", suffix: "g/dL", color: .orange)
                         .keyboardType(.decimalPad)
@@ -216,31 +211,6 @@ extension NewDonationView {
                             vm.donation.compensation = compensation
                         }
                 }
-
-                VStack {
-                    ValueField(text: $vm.proteinText, label: "Protein", placeholder: "0.0", suffix: "g/dL", color: .orange)
-                        .keyboardType(.decimalPad)
-                        .focused($focusedField, equals: .protein)
-                        .onChange(of: vm.proteinText) { text in
-                            guard let protein = Double(text) else {
-                                vm.proteinText = ""
-                                return
-                            }
-                            vm.donation.protein = protein
-                        }
-
-                    ValueField(text: $vm.compensationText, label: "Compensation", placeholder: "0", prefix: "$", color: .green)
-                        .keyboardType(.numberPad)
-                        .focused($focusedField, equals: .compensation)
-                        .onChange(of: vm.compensationText) { text in
-                            guard let compensation = Int16(text) else {
-                                vm.compensationText = ""
-                                return
-                            }
-                            vm.donation.compensation = compensation
-                        }
-                }
-            }
         }
     }
 
@@ -268,14 +238,6 @@ extension NewDonationView {
             .frame(maxWidth: .infinity)
             .padding()
             .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
-        // TODO: V1.1 Dismiss tips
-        //                        .overlay(alignment: .topTrailing) {
-        //                            Image(systemName: "xmark.circle.fill")
-        //                                .offset(x: 10, y: -10)
-        //                                .font(.title2)
-        //                                .foregroundColor(.gray)
-        //                        }
-            .padding(.top) // stay below overlay
     }
 
     private var cycleCountView: some View {
@@ -322,58 +284,72 @@ extension NewDonationView {
 
     private var donatingNowInfo: some View {
         VStack(alignment: .leading) {
-            if vm.donationState > .idle {
+			if vm.donationState != .finished {
+				HStack {
+					Text("Start Time")
+					Spacer()
+					if vm.donationState == .started {
+						Text(vm.donation.startTime, style: .time)
+							.foregroundColor(.secondary)
+					} else {
+						Text("Not Started")
+							.foregroundColor(.secondary)
+					}
+
+				}
+			}
+
+			if vm.donationState == .finished {
                 HStack {
-                    Text("Started")
+                    Text("Time")
                     Spacer()
-                    Text(vm.donation.startTime, style: .time)
-                        .foregroundColor(.secondary)
+					HStack {
+						Text(vm.donation.startTime, style: .time)
+						Text("-")
+						Text(vm.donation.endTime, style: .time)
+					}
+					.foregroundColor(.secondary)
                 }
             }
 
-            if vm.donationState > .started {
-                Divider()
-                    .padding(.bottom, 5)
+			Divider()
 
-                HStack {
-                    Text("Finished")
-                    Spacer()
-                    Text(vm.donation.endTime, style: .time)
-                        .foregroundColor(.secondary)
-                }
-            }
+			donationDuration.padding(.top, 5)
         }
         .font(.headline)
         .padding()
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 15))
     }
 
-    private var donationDuration: some View {
-        Group {
-            if let startTime = vm.startTime {
-                HStack {
-                    Text("Duration")
-                        .font(.headline)
-                    Spacer()
-                    if vm.donationState == .started {
-                        Text(startTime, style: .timer)
-                            .monospacedDigit()
-                            .bold()
-                            .foregroundColor(.secondary)
-                    } else {
-                        if vm.endTime != nil {
-                            Text(vm.donation.durationString)
-                                .font(.headline)
-                                .foregroundColor(.secondary)
-                        }
-                    }
+	@ViewBuilder
+	private var donationDuration: some View {
+		if let startTime = vm.startTime {
+			HStack {
+				Text("Duration").font(.headline)
+				Spacer()
+				if vm.donationState == .started {
+					Text(startTime, style: .timer)
+						.monospacedDigit()
+						.bold()
+						.foregroundColor(.secondary)
+				} else {
+					if vm.endTime != nil {
+						Text(vm.donation.durationString)
+							.font(.headline)
+							.foregroundColor(.secondary)
+					}
+				}
 
-                }
-                .padding()
-                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 15))
-            }
-        }
-    }
+			}
+		} else {
+			HStack {
+				Text("Duration").font(.headline)
+				Spacer()
+				Text("-:--")
+					.foregroundColor(.secondary)
+			}
+		}
+	}
 
     private var actionButton: some View {
         Button {

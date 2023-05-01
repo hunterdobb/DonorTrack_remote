@@ -25,7 +25,7 @@ extension DonationsListView {
     @MainActor
     class ViewModel: ObservableObject {
         private let context: NSManagedObjectContext
-        let provider: DonationsProvider // I made this un-private to pass it into another view?
+        let provider: DataController // I made this un-private to pass it into another view?
 
         @Published var showNotes = false
 
@@ -34,7 +34,7 @@ extension DonationsListView {
         @Published var searchConfig = SearchConfig()
         @Published var sort: Sort = .newestFirst
 
-        init(provider: DonationsProvider, donation: DonationEntity? = nil) {
+        init(provider: DataController, donation: DonationEntity? = nil) {
             self.provider = provider
             self.context = provider.viewContext
         }

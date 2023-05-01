@@ -106,11 +106,11 @@ extension DonationEntity {
         return donations
     }
 
-    static func preview(context: NSManagedObjectContext = DonationsProvider.shared.viewContext) -> DonationEntity {
+    static func preview(context: NSManagedObjectContext = DataController.shared.viewContext) -> DonationEntity {
         makePreview(count: 1, in: context)[0]
     }
 
-    static func empty(context: NSManagedObjectContext = DonationsProvider.shared.viewContext) -> DonationEntity {
+    static func empty(context: NSManagedObjectContext = DataController.shared.viewContext) -> DonationEntity {
         DonationEntity(context: context)
     }
 }

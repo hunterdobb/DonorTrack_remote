@@ -107,14 +107,14 @@ struct DonationsListView: View {
 // MARK: - Preview
 struct DonationsListView_Previews: PreviewProvider {
 	static var previews: some View {
-		let preview = DonationsProvider.shared
+		let preview = DataController.shared
 		DonationsListView(vm: .init(provider: .shared))
 			.environment(\.managedObjectContext, preview.viewContext)
 			.environmentObject(ReviewRequestManager())
 			.previewDisplayName("List With Data")
 			.onAppear { DonationEntity.makePreview(count: 10, in: preview.viewContext) }
 
-		let emptyPreview = DonationsProvider.shared
+		let emptyPreview = DataController.shared
 		DonationsListView(vm: .init(provider: .shared))
 			.environment(\.managedObjectContext, emptyPreview.viewContext)
 			.environmentObject(ReviewRequestManager())
@@ -218,7 +218,7 @@ extension DonationsListView {
 			}
 
 			Button {
-				vm.donationToEdit = .empty(context: DonationsProvider.shared.newContext)
+				vm.donationToEdit = .empty(context: DataController.shared.newContext)
 			} label: {
 				Label("Add Donation Manually", systemImage: "keyboard")
 			}

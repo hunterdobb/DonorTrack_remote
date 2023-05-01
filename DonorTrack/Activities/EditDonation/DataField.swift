@@ -20,7 +20,8 @@ struct DataField: View {
             HStack(spacing: 0) {
                 if let prefix {
                     Text(prefix)
-                        .foregroundColor(color.opacity(text.isEmpty ? 0.5 : 1))                }
+                        .foregroundColor(color.opacity(text.isEmpty ? 0.5 : 1))
+				}
 
                 TextField(text: $text) {
                     Text(placeholder)
@@ -50,12 +51,12 @@ struct DataField_Previews: PreviewProvider {
     static var previews: some View {
         DataField(text: .constant(""), label: "Protein", placeholder: "0.0", color: .orange, suffix: "g/dL")
             .padding()
-            .previewDisplayName("Data Field w/ suffix")
+            .previewDisplayName("DataField Suffix")
             .previewLayout(.sizeThatFits)
 
         DataField(text: .constant(""), label: "Compensation", placeholder: "0", color: .green, prefix: "$")
             .padding()
-            .previewDisplayName("Data Field w/ prefix")
+            .previewDisplayName("DataField Prefix")
             .previewLayout(.sizeThatFits)
     }
 }

@@ -14,6 +14,7 @@ import SwiftUI
 class NewDonationActivity: ObservableObject {
 	// TODO: I need to look up how to do it properly.
 
+	// Used for live activity and dynamic island
 	static let shared = NewDonationActivity()
 
 	@Published var activity: Activity<NewDonationAttributes>? = nil
@@ -26,7 +27,7 @@ extension NewDonationView {
     class ViewModel: ObservableObject {
         @Published var donation: DonationEntity
         private var context: NSManagedObjectContext
-        private let provider: DonationsProvider
+        private let provider: DataController
 
         @Published var proteinText = ""
         @Published var compensationText = ""
@@ -34,10 +35,11 @@ extension NewDonationView {
         @Published var cycleCount: Int16 = 0
         @Published var notes = ""
         
-        @Published var startTime: Date?
+//		@AppStorage.Converter(wrappedValue: Date(), "startTime") var startTime: Date
+		@Published var startTime: Date?
         @Published var endTime: Date?
 
-        @Published var donationState: DonationState = .idle
+        @Published var donationState: NewDonationState = .idle
         @Published var actionButtonText = "Start Donation"
         @Published var actionButtonColor: Color = .blue
 
@@ -52,22 +54,20 @@ extension NewDonationView {
         var alertTitle = ""
         var alertMessage = ""
 
-        var canUndoCycleCount: Bool {
-            cycleCount > 0
-        }
+        var canUndoCycleCount: Bool { cycleCount > 0 }
 
-        enum DonationState: Int, Comparable {
+        enum NewDonationState: Int, Comparable {
+			case idle = 0, started, finished
+
             // Used for figuring out things like 'if donationState > .idle' meaning we're past the idle state.
-            static func < (lhs: NewDonationView.ViewModel.DonationState, rhs: NewDonationView.ViewModel.DonationState) -> Bool {
+            static func < (lhs: NewDonationView.ViewModel.NewDonationState, rhs: NewDonationView.ViewModel.NewDonationState) -> Bool {
                 lhs.rawValue < rhs.rawValue
             }
-
-            case idle = 0, started, finished
         }
 
 		@EnvironmentObject private var reviewsManager: ReviewRequestManager
 
-        init(provider: DonationsProvider, donation: DonationEntity? = nil) {
+        init(provider: DataController, donation: DonationEntity? = nil) {
             self.provider = provider
             self.context = provider.newContext
             self.donation = DonationEntity(context: self.context)

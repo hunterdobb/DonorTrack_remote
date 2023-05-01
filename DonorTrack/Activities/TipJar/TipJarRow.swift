@@ -16,9 +16,7 @@ struct TipJarRow: View {
 		HStack {
 			Button(item?.description ?? "🙂 Kind Tip") {
 				if let item {
-					Task {
-						await store.purchase(item)
-					}
+					Task { await store.purchase(item) }
 				}
 			}
 			.foregroundColor(.indigo)

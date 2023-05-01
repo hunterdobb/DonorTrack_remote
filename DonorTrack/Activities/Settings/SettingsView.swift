@@ -23,6 +23,7 @@ struct SettingsView: View {
 				} footer: {
 					Text("Haptics are the small vibrations you feel when tapping on certain buttons.")
 				}
+
 				Section {
 					tipJar
 					rate

@@ -20,7 +20,7 @@ extension EditDonationView {
         }
 
         private let context: NSManagedObjectContext
-        private let provider: DonationsProvider
+        private let provider: DataController
 
         @Published var proteinText = ""
         @Published var compensationText = ""
@@ -31,7 +31,7 @@ extension EditDonationView {
 //        @Published var showingAlert = false
 //        let alertTitle = "Fill out all the info before saving"
 
-        init(provider: DonationsProvider, donation: DonationEntity? = nil, preview: Bool = false) {
+        init(provider: DataController, donation: DonationEntity? = nil, preview: Bool = false) {
             self.provider = provider
 
             if preview {
@@ -54,11 +54,11 @@ extension EditDonationView {
 
         }
 
-		/// This function update the start and end times date when the user changes the date of a donation
+		/// Updates the start and end times date when the user changes the date of a donation
 		/// - Parameter newValue: The new date the user selected
-        func updateDay(with newValue: Date) {
+        func updateDay(using newDate: Date) {
             let calendar = Calendar.current
-            let newComponents = calendar.dateComponents([.month, .day, .year], from: newValue)
+            let newComponents = calendar.dateComponents([.month, .day, .year], from: newDate)
 
             let existingStartComponents = calendar.dateComponents([.hour, .minute, .second], from: donation.startTime)
             var newStartTime = DateComponents()
