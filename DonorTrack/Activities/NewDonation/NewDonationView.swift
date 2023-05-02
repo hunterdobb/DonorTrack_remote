@@ -28,18 +28,13 @@ struct NewDonationView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollViewReader { value in
+            ScrollViewReader { proxy in
                 ScrollView {
                     VStack(alignment: .leading) {
-//						if vm.donationState == .idle {
-//							startDonationTip.padding(.bottom)
-//						} else {
-//							donatingNowInfo.padding(.bottom)
-//						}
-
 						donatingNowInfo
 							.padding(.bottom, 8)
 							.padding(.top, -8)
+						
                         valueFields
 
 						if vm.donationState != .idle {
@@ -56,7 +51,6 @@ struct NewDonationView: View {
 								shouldShowSuccess.toggle()
 								hapticNotification(.success)
 							}
-
 						}
 					}
 					.onAppear {
@@ -64,20 +58,7 @@ struct NewDonationView: View {
 						// screen if the user quickly changed tabs.
 						shouldShowSuccess = false
 					}
-					.overlay {
-						if shouldShowSuccess {
-							CheckmarkView()
-								.transition(.scale.combined(with: .opacity))
-								.onAppear {
-									DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-										withAnimation(.spring()) {
-											shouldShowSuccess.toggle()
-											vm.isSaved = false
-										}
-									}
-								}
-						}
-					}
+					.overlay(content: successCheckmark)
                     .onReceive(vm.$donationState) { state in
                         // This is a temporary fix to make the timer start updating
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -86,24 +67,24 @@ struct NewDonationView: View {
                             }
                         }
                     }
-                    .id("top")
+                    .id("top") // Used for scrolling to the keyboard
                     .padding()
                     .onChange(of: focusedField) { _ in
                         if focusedField == .notes {
                             withAnimation {
-                                value.scrollTo("notes", anchor: .center)
+                                proxy.scrollTo("notes", anchor: .center)
                             }
                         }
 
                         if focusedField == nil {
                             withAnimation {
-                                value.scrollTo("top", anchor: .top)
+                                proxy.scrollTo("top", anchor: .top)
                             }
                         }
                     }
                     .onChange(of: vm.donation.notes) { _ in
                         withAnimation {
-                            value.scrollTo("notes", anchor: .bottom)
+                            proxy.scrollTo("notes", anchor: .bottom)
                         }
                     }
                 }
@@ -114,7 +95,6 @@ struct NewDonationView: View {
                 }
             }
             .navigationTitle("New Donation")
-//            .navigationBarTitleDisplayMode(.inline)
             .scrollDismissesKeyboard(.automatic)
             .alert(vm.alertTitle, isPresented: $vm.showingNotFilledInAlert) { }
             .alert(vm.alertTitle, isPresented: $vm.showingFinishConfirmationAlert) {
@@ -132,22 +112,7 @@ struct NewDonationView: View {
             } message: {
                 Text(vm.alertMessage)
             }
-            .toolbar {
-                ToolbarItemGroup(placement: .keyboard) {
-                    Spacer()
-                    keyboardToolbarButtons
-                }
-
-                ToolbarItem(placement: .destructiveAction) {
-                    if vm.donationState > .idle {
-                        Button("Reset") {
-                            vm.alertTitle = "Are you sure?"
-                            vm.alertMessage = "This will delete all the current info and cannot be undone."
-                            vm.showingResetConfirmationAlert = true
-                        }
-                    }
-                }
-            }
+			.toolbar(content: toolbarContent)
         }
     }
 }
@@ -165,6 +130,40 @@ struct NewDonationView_Previews: PreviewProvider {
 
 // MARK: - Views Extension
 extension NewDonationView {
+	@ViewBuilder
+	private func successCheckmark() -> some View {
+		if shouldShowSuccess {
+			CheckmarkView()
+				.transition(.scale.combined(with: .opacity))
+				.onAppear {
+					DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+						withAnimation(.spring()) {
+							shouldShowSuccess.toggle()
+							vm.isSaved = false
+						}
+					}
+				}
+		}
+	}
+
+	@ToolbarContentBuilder
+	private func toolbarContent() -> some ToolbarContent {
+		ToolbarItemGroup(placement: .keyboard) {
+			Spacer()
+			keyboardToolbarButtons
+		}
+
+		ToolbarItem(placement: .destructiveAction) {
+			if vm.donationState != .idle {
+				Button("Reset") {
+					vm.alertTitle = "Are you sure?"
+					vm.alertMessage = "This will delete all the current info and cannot be undone."
+					vm.showingResetConfirmationAlert = true
+				}
+			}
+		}
+	}
+
     private var valueFields: some View {
         VStack(alignment: .leading) {
             Text("Enter Donation Info")
@@ -328,11 +327,13 @@ extension NewDonationView {
 				Text("Duration").font(.headline)
 				Spacer()
 				if vm.donationState == .started {
+					// on-going
 					Text(startTime, style: .timer)
 						.monospacedDigit()
 						.bold()
 						.foregroundColor(.secondary)
 				} else {
+					// finished
 					if vm.endTime != nil {
 						Text(vm.donation.durationString)
 							.font(.headline)
@@ -342,6 +343,7 @@ extension NewDonationView {
 
 			}
 		} else {
+			// not started
 			HStack {
 				Text("Duration").font(.headline)
 				Spacer()

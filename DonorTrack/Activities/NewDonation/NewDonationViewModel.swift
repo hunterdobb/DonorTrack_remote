@@ -13,6 +13,7 @@ import SwiftUI
 @available(iOS 16.2, *)
 class NewDonationActivity: ObservableObject {
 	// TODO: I need to look up how to do it properly.
+	// I put it here to limit it to iOS 16.2
 
 	// Used for live activity and dynamic island
 	static let shared = NewDonationActivity()
@@ -155,9 +156,7 @@ extension NewDonationView {
         func finishDonation() {
 			endTime = .now
 			donation.endTime = .now
-
 			endLiveActivity()
-
             actionButtonColor = .mint
             actionButtonText = "Save Donation"
             donationState = .finished
