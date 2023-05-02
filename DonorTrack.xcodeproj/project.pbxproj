@@ -28,6 +28,7 @@
 		B5359EC3298EAE4600566111 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5359EC2298EAE4600566111 /* SettingsView.swift */; };
 		B5359EC5298EB5D400566111 /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5359EC4298EB5D400566111 /* Symbols.swift */; };
 		B5359EC7298EB94A00566111 /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5359EC6298EB94A00566111 /* UserDefaultKeys.swift */; };
+		B53C99482A01CC4C0034EE90 /* NewDonation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53C99472A01CC4C0034EE90 /* NewDonation.swift */; };
 		B541F8C229D6325300915970 /* ReviewsRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B541F8C129D6325300915970 /* ReviewsRequestManager.swift */; };
 		B541F8C429D6574800915970 /* AppReviewRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B541F8C329D6574800915970 /* AppReviewRequestTests.swift */; };
 		B573232E297B384B003D0C3E /* DataField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573232D297B384B003D0C3E /* DataField.swift */; };
@@ -106,6 +107,7 @@
 		B5359EC2298EAE4600566111 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B5359EC4298EB5D400566111 /* Symbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
 		B5359EC6298EB94A00566111 /* UserDefaultKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultKeys.swift; sourceTree = "<group>"; };
+		B53C99472A01CC4C0034EE90 /* NewDonation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDonation.swift; sourceTree = "<group>"; };
 		B541F8C129D6325300915970 /* ReviewsRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsRequestManager.swift; sourceTree = "<group>"; };
 		B541F8C329D6574800915970 /* AppReviewRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewRequestTests.swift; sourceTree = "<group>"; };
 		B573232D297B384B003D0C3E /* DataField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataField.swift; sourceTree = "<group>"; };
@@ -242,8 +244,9 @@
 		B51C4BE82973842B00FEEF50 /* NewDonation */ = {
 			isa = PBXGroup;
 			children = (
-				B51C4BC92972049800FEEF50 /* NewDonationView.swift */,
+				B53C99472A01CC4C0034EE90 /* NewDonation.swift */,
 				B51C4BEB2974BB6000FEEF50 /* NewDonationViewModel.swift */,
+				B51C4BC92972049800FEEF50 /* NewDonationView.swift */,
 			);
 			path = NewDonation;
 			sourceTree = "<group>";
@@ -496,6 +499,7 @@
 				B51C4BE32973008500FEEF50 /* ValueField.swift in Sources */,
 				B5D65E1C29DC65D500AF0D2E /* WhiteGroupBoxStyle.swift in Sources */,
 				B51C4BCA2972049800FEEF50 /* NewDonationView.swift in Sources */,
+				B53C99482A01CC4C0034EE90 /* NewDonation.swift in Sources */,
 				B51C4BD42972090900FEEF50 /* DonationEntity.swift in Sources */,
 				B595C0562992BC7D00F80A68 /* TipStore.swift in Sources */,
 				B5359EC3298EAE4600566111 /* SettingsView.swift in Sources */,

@@ -35,7 +35,7 @@ extension NewDonationView {
         @Published var amountText = ""
         @Published var cycleCount: Int16 = 0
         @Published var notes = ""
-        
+
 //		@AppStorage.Converter(wrappedValue: Date(), "startTime") var startTime: Date
 		@Published var startTime: Date?
         @Published var endTime: Date?
