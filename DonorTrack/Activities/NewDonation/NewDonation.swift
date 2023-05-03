@@ -5,6 +5,7 @@
 //  Created by Hunter Dobbelmann on 5/2/23.
 //
 
+import CoreData
 import Foundation
 
 struct NewDonation {
@@ -19,4 +20,14 @@ struct NewDonation {
 	enum NewDonationState {
 		case idle, started, finished
 	}
+
+	func saveToPersistentStorage(context: NSManagedObjectContext) throws {
+		if donationAmount.isEmpty || protein.isEmpty || compensation.isEmpty {
+			throw NewDonationSaveError.blankField
+		}
+	}
+}
+
+enum NewDonationSaveError: Error {
+	case blankField
 }

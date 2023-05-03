@@ -13,6 +13,6 @@ struct NewDonationAttributes: ActivityAttributes {
 
 	public struct ContentState: Codable, Hashable {
 		var startTime: Date
-		var cycleCount: Int16
+		var cycleCount: Int
 	}
 }

@@ -59,7 +59,7 @@ struct NewDonationView: View {
 						shouldShowSuccess = false
 					}
 					.overlay(content: successCheckmark)
-                    .onReceive(vm.$donationState) { state in
+					.onChange(of: vm.donationState) { state in
                         // This is a temporary fix to make the timer start updating
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             if state == .started {
@@ -82,7 +82,7 @@ struct NewDonationView: View {
                             }
                         }
                     }
-                    .onChange(of: vm.donation.notes) { _ in
+                    .onChange(of: vm.notes) { _ in
                         withAnimation {
                             proxy.scrollTo("notes", anchor: .bottom)
                         }
@@ -96,7 +96,9 @@ struct NewDonationView: View {
             }
             .navigationTitle("New Donation")
             .scrollDismissesKeyboard(.automatic)
-            .alert(vm.alertTitle, isPresented: $vm.showingNotFilledInAlert) { }
+			.alert(vm.alertTitle, isPresented: $vm.showingNotFilledInAlert) { } message: {
+				Text(vm.alertMessage)
+			}
             .alert(vm.alertTitle, isPresented: $vm.showingFinishConfirmationAlert) {
                 Button("Finish") {
                     vm.finishDonation()
@@ -172,7 +174,11 @@ extension NewDonationView {
 				.foregroundColor(.secondary)
                 .font(.headline)
 
-            ValueField(text: $vm.amountText, label: "Donation Amount", placeholder: "0", suffix: "mL", color: .cyan)
+			let amountHint = "This is the total amount of plasma you donate this session, measured in milliliters.\n\nThe amount can vary depending on the collection method and your weight."
+			let proteinHint = "This is the total amount of protein in your blood, measured in grams per deciliter.\n\nYou may have to ask for this measurement during the screening process.\n\nA healthy range is around 6 to 8 g/dL."
+			let compensationHint = "This is the amount of compensation you earn for this donation."
+
+			ValueField(text: $vm.amountText, label: "Donation Amount", placeholder: "0", suffix: "mL", color: .cyan, hint: amountHint)
                 .keyboardType(.numberPad)
                 .focused($focusedField, equals: .donationAmount)
                 .onTapGesture {
@@ -180,34 +186,28 @@ extension NewDonationView {
                     print("\(String(describing: focusedField))")
                 }
                 .onChange(of: vm.amountText) { text in
-                    guard let amountDonated = Int16(text) else {
-                        vm.amountText = ""
-                        return
-                    }
-                    vm.donation.amountDonated = amountDonated
+					if Int16(text) == nil {
+						vm.amountText = ""
+					}
                 }
 
                 HStack {
-                    ValueField(text: $vm.proteinText, label: "Protein", placeholder: "0.0", suffix: "g/dL", color: .orange)
+					ValueField(text: $vm.proteinText, label: "Protein", placeholder: "0.0", suffix: "g/dL", color: .orange, hint: proteinHint)
                         .keyboardType(.decimalPad)
                         .focused($focusedField, equals: .protein)
                         .onChange(of: vm.proteinText) { text in
-                            guard let protein = Double(text) else {
-                                vm.proteinText = ""
-                                return
-                            }
-                            vm.donation.protein = protein
+							if Double(text) == nil {
+								vm.proteinText = ""
+							}
                         }
 
-                    ValueField(text: $vm.compensationText, label: "Compensation", placeholder: "0", prefix: "$", color: .green)
+					ValueField(text: $vm.compensationText, label: "Compensation", placeholder: "0", prefix: "$", color: .green, hint: compensationHint)
                         .keyboardType(.numberPad)
                         .focused($focusedField, equals: .compensation)
                         .onChange(of: vm.compensationText) { text in
-                            guard let compensation = Int16(text) else {
-                                vm.compensationText = ""
-                                return
-                            }
-                            vm.donation.compensation = compensation
+							if Int16(text) == nil {
+								vm.compensationText = ""
+							}
                         }
                 }
         }
@@ -219,7 +219,7 @@ extension NewDonationView {
                 .font(.headline)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            TextField("Add notes here", text: $vm.donation.notes, axis: .vertical)
+			TextField("Add Notes", text: $vm.notes, axis: .vertical)
                 .padding(.bottom, 5)
                 .focused($focusedField, equals: .notes)
         }
@@ -288,7 +288,7 @@ extension NewDonationView {
 					Text("Start Time")
 					Spacer()
 					if vm.donationState == .started {
-						Text(vm.donation.startTime, style: .time)
+						Text(Date(timeIntervalSince1970: vm.startTime), style: .time)
 							.foregroundColor(.secondary)
 					} else {
 						Text("Not Started")
@@ -303,9 +303,9 @@ extension NewDonationView {
                     Text("Time")
                     Spacer()
 					HStack {
-						Text(vm.donation.startTime, style: .time)
+						Text(Date(timeIntervalSince1970: vm.startTime), style: .time)
 						Text("-")
-						Text(vm.donation.endTime, style: .time)
+						Text(Date(timeIntervalSince1970: vm.endTime), style: .time)
 					}
 					.foregroundColor(.secondary)
                 }
@@ -322,22 +322,23 @@ extension NewDonationView {
 
 	@ViewBuilder
 	private var donationDuration: some View {
-		if let startTime = vm.startTime {
+		if vm.startTime != Date.distantFuture.timeIntervalSince1970 {
 			HStack {
 				Text("Duration").font(.headline)
 				Spacer()
 				if vm.donationState == .started {
 					// on-going
-					Text(startTime, style: .timer)
+					Text(Date(timeIntervalSince1970: vm.startTime), style: .timer)
 						.monospacedDigit()
 						.bold()
 						.foregroundColor(.secondary)
 				} else {
 					// finished
-					if vm.endTime != nil {
-						Text(vm.donation.durationString)
+					if vm.endTime != Date.distantFuture.timeIntervalSince1970 {
+						Text(vm.donationDurationString)
 							.font(.headline)
 							.foregroundColor(.secondary)
+
 					}
 				}
 
@@ -360,14 +361,13 @@ extension NewDonationView {
             // This button will switch between Start, Finish, and Save
             Text(vm.actionButtonText)
                 .frame(maxWidth: .infinity)
-
         }
         .font(.system(.largeTitle, design: .rounded))
         .bold()
-        .foregroundColor(vm.actionButtonColor)
+		.foregroundColor(vm.actionButtonColor)
         .padding(.vertical)
         .background(vm.actionButtonColor.opacity(0.2))
-        .background(.ultraThinMaterial, in: Capsule())
+		.background(.ultraThinMaterial, in: Capsule(style: .continuous))
         .padding(.horizontal, 10)
         .padding(.bottom, 8)
     }
@@ -383,7 +383,7 @@ extension NewDonationView {
             .font(.headline)
             .frame(maxWidth: .infinity)
 
-            // TODO: V1.1 keyBoardToolbarButtons
+            // TODO: keyBoardToolbarButtons
             //            Button {
             //
             //            } label: {
@@ -419,7 +419,6 @@ extension NewDonationView {
     private var scrollSpacer: some View {
         Text("Scroll Spacer")
             .font(.system(.largeTitle, design: .rounded))
-        //            .padding(.vertical)
             .hidden()
     }
 }

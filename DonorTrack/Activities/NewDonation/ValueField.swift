@@ -14,26 +14,56 @@ struct ValueField: View {
     let prefix: String
     let suffix: String
     let color: Color
+	let required: Bool
+	let hint: String
 
-    init(text: Binding<String>, label: String, placeholder: String, prefix: String = "", suffix: String = "", color: Color = .blue) {
+	@State private var showAlert = false
+
+	init(text: Binding<String>,
+		 label: String,
+		 placeholder: String,
+		 prefix: String = "",
+		 suffix: String = "",
+		 color: Color = .blue,
+		 required: Bool = true,
+		 hint: String = "ADD HINT") {
         self._text = text
         self.label = label
         self.placeholder = placeholder
         self.prefix = prefix
         self.suffix = suffix
         self.color = color
+		self.required = required
+		self.hint = hint
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(label)
-                .font(.headline)
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
+            HStack {
+            	Text(label)
+					.font(.headline)
+					.lineLimit(1)
+					.minimumScaleFactor(0.7)
+
+				Spacer()
+
+				if text.isEmpty && required {
+					Image(systemName: "questionmark")
+						.symbolVariant(.circle)
+						.onTapGesture {
+							showAlert = true
+						}
+				}
+            }
+			.alert("\(label)", isPresented: $showAlert) {
+			} message: {
+				Text("\(hint)\n\nEnter 0 if you don't want to provide a value.")
+			}
 
             ZStack(alignment: .leading) {
                 // This is used so the unit moves with the text in the TextField
-                HStack(alignment: .firstTextBaseline, spacing: 3) { // HIDDEN
+				// HIDDEN
+                HStack(alignment: .firstTextBaseline, spacing: 3) {
                     Text(prefix).hidden()
 
                     TextField(text: $text) {

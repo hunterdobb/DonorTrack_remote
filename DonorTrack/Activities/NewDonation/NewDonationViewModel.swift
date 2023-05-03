@@ -26,77 +26,94 @@ class NewDonationActivity: ObservableObject {
 extension NewDonationView {
 	@MainActor
     class ViewModel: ObservableObject {
-        @Published var donation: DonationEntity
+		@AppStorage("startTime") var startTime = Date.distantFuture.timeIntervalSince1970
+		@AppStorage("endTime") var endTime = Date.distantFuture.timeIntervalSince1970
+		@AppStorage("amountText") var amountText = ""
+		@AppStorage("proteinText") var proteinText = ""
+		@AppStorage("compensationText") var compensationText = ""
+		@AppStorage("cycleCount") var cycleCount = 0
+		@AppStorage("notes") var notes = ""
+		@AppStorage("donationState") var donationState: NewDonationState = .idle
+
+		// Used for the saved checkmark animation
+		@Published var isSaved = false
+
+		// Alerts
+		@Published var showingNotFilledInAlert = false
+		@Published var showingFinishConfirmationAlert = false
+		@Published var showingResetConfirmationAlert = false
+
+		// Should be set before showing each alert
+		var alertTitle = ""
+		var alertMessage = ""
+
+        private var donation: DonationEntity
         private var context: NSManagedObjectContext
         private let provider: DataController
 
-        @Published var proteinText = ""
-        @Published var compensationText = ""
-        @Published var amountText = ""
-        @Published var cycleCount: Int16 = 0
-        @Published var notes = ""
-
-//		@AppStorage.Converter(wrappedValue: Date(), "startTime") var startTime: Date
-		@Published var startTime: Date?
-        @Published var endTime: Date?
-
-        @Published var donationState: NewDonationState = .idle
-        @Published var actionButtonText = "Start Donation"
-        @Published var actionButtonColor: Color = .blue
-
-		@Published var isSaved = false
-
-        // Alerts
-        @Published var showingNotFilledInAlert = false
-        @Published var showingFinishConfirmationAlert = false
-        @Published var showingResetConfirmationAlert = false
-
-        // Should be set before showing each alert
-        var alertTitle = ""
-        var alertMessage = ""
-
-        var canUndoCycleCount: Bool { cycleCount > 0 }
-
-        enum NewDonationState: Int, Comparable {
+		enum NewDonationState: Int {
+			// rawValue of Int so it can be saved in @SceneStorage
 			case idle = 0, started, finished
+		}
 
-            // Used for figuring out things like 'if donationState > .idle' meaning we're past the idle state.
-            static func < (lhs: NewDonationView.ViewModel.NewDonationState, rhs: NewDonationView.ViewModel.NewDonationState) -> Bool {
-                lhs.rawValue < rhs.rawValue
-            }
-        }
+		// MARK: - Computed Properties
+		var actionButtonText: String {
+			switch donationState {
+			case .idle: return "Start Donation"
+			case .started: return "Finish Donation"
+			case .finished: return "Save Donation"
+			}
+		}
 
-		@EnvironmentObject private var reviewsManager: ReviewRequestManager
+		var actionButtonColor: Color {
+			switch donationState {
+			case .idle: return .blue
+			case .started: return .pink
+			case .finished: return .mint
+			}
+		}
 
+		var donationDurationString: String {
+			if endTime >= startTime {
+				return (Date(timeIntervalSince1970: startTime)...Date(timeIntervalSince1970: endTime)).asDurationString()
+			}
+
+			return "Invalid Range"
+		}
+
+		var canUndoCycleCount: Bool { cycleCount > 0 }
+
+		// MARK: - Init
         init(provider: DataController, donation: DonationEntity? = nil) {
             self.provider = provider
             self.context = provider.newContext
             self.donation = DonationEntity(context: self.context)
         }
 
+		// MARK: - Intents
         func save() throws {
+			donation.startTime 		= Date(timeIntervalSince1970: startTime)
+			donation.endTime 		= Date(timeIntervalSince1970: endTime)
+			donation.notes 			= notes
+			donation.amountDonated 	= Int16(amountText)!
+			donation.protein 		= Double(proteinText)!
+			donation.compensation 	= Int16(compensationText)!
+			donation.cycleCount 	= Int16(cycleCount)
+
             try context.save()
-            print("Saved!")
         }
 
         func actionButtonTapped() {
 			switch donationState {
 			case .idle: // start
-				startTime = .now
-				donation.startTime = .now
-
+				startTime = Date.now.timeIntervalSince1970
 				startLiveActivity()
-				
-				actionButtonColor = .pink
-				actionButtonText = "Finish Donation"
 				donationState = .started
 				hapticImpact(.rigid)
-
 			case .started: // finish
 				alertTitle = "Finished?"
 				showingFinishConfirmationAlert = true
 				// finishDonation() is called from view
-
 			case .finished: // save
 				if fieldsValidated() {
 					do {
@@ -108,19 +125,70 @@ extension NewDonationView {
 					}
 				} else {
 					alertTitle = "Fill out all the info before saving"
+					alertMessage = "Enter 0 if you don't want to provide a value for any field."
 					showingNotFilledInAlert = true
-					print("Not valid")
 				}
 			}
         }
 
+		// Called from view
+		func finishDonation() {
+			endTime = Date.now.timeIntervalSince1970
+			endLiveActivity()
+			donationState = .finished
+		}
+
+		func resetView() {
+			endLiveActivity()
+			donationState = .idle
+			amountText = ""
+			proteinText = ""
+			compensationText = ""
+			cycleCount = 0
+			notes = ""
+			startTime = Date.distantFuture.timeIntervalSince1970
+			endTime = Date.distantFuture.timeIntervalSince1970
+
+			// Create new DonationEntity to edit
+			// We have to update the context so we have new data to work with
+			// If we don't do this, donations that we reset will still exist and get saved when we call context.save()
+			// This is bc we were making new DonationEntity's in the same context
+			context = provider.newContext
+			donation = DonationEntity(context: context)
+		}
+
+		func incrementCycleCount() {
+			cycleCount += 1
+
+			if #available(iOS 16.2, *) {
+				updateLiveActivity()
+			}
+
+			hapticImpact(.rigid)
+		}
+
+		func undoCycleCount() {
+			if canUndoCycleCount {
+				cycleCount -= 1
+
+				if #available(iOS 16.2, *) {
+					updateLiveActivity()
+				}
+			}
+
+			hapticImpact(.rigid)
+		}
+
+		// MARK: - Live Activity
 		private func startLiveActivity() {
 			if #available(iOS 16.2, *) {
 				let activityAttributes = NewDonationAttributes()
 				let activityContent = NewDonationAttributes.NewDonationStatus(startTime: .now, cycleCount: cycleCount)
 
 				do {
-					NewDonationActivity.shared.activity =  try Activity.request(attributes: activityAttributes, contentState: activityContent, pushType: nil)
+					NewDonationActivity.shared.activity = try Activity.request(attributes: activityAttributes,
+																			   contentState: activityContent,
+																			   pushType: nil)
 				} catch {
 					print(error.localizedDescription)
 				}
@@ -129,8 +197,8 @@ extension NewDonationView {
 
 		private func endLiveActivity() {
 			if #available(iOS 16.2, *) {
-				guard let startTime else { return }
-				let finishedDonationStatus = NewDonationAttributes.NewDonationStatus(startTime: startTime, cycleCount: cycleCount)
+				guard startTime != Date.distantFuture.timeIntervalSince1970 else { return }
+				let finishedDonationStatus = NewDonationAttributes.NewDonationStatus(startTime: Date(timeIntervalSince1970: startTime), cycleCount: cycleCount)
 				let finalContent = ActivityContent(state: finishedDonationStatus, staleDate: nil)
 
 				Task {
@@ -143,72 +211,16 @@ extension NewDonationView {
 
 		@available(iOS 16.2, *)
 		private func updateLiveActivity() {
-			guard let startTime else { return }
-			let updatedDonationStatus = NewDonationAttributes.NewDonationStatus(startTime: startTime, cycleCount: cycleCount)
+			guard startTime != Date.distantFuture.timeIntervalSince1970 else { return }
+			let updatedDonationStatus = NewDonationAttributes.NewDonationStatus(startTime: Date(timeIntervalSince1970: startTime), cycleCount: cycleCount)
 			let updatedContent = ActivityContent(state: updatedDonationStatus, staleDate: nil)
 
-			Task {
-				await NewDonationActivity.shared.activity?.update(updatedContent)
-			}
+			Task { await NewDonationActivity.shared.activity?.update(updatedContent) }
 		}
 
-        // Called from view
-        func finishDonation() {
-			endTime = .now
-			donation.endTime = .now
-			endLiveActivity()
-            actionButtonColor = .mint
-            actionButtonText = "Save Donation"
-            donationState = .finished
-        }
-
-        func resetView() {
-			endLiveActivity()
-            donationState = .idle
-            actionButtonText = "Start Donation"
-            actionButtonColor = .blue
-            amountText = ""
-            proteinText = ""
-            compensationText = ""
-            cycleCount = 0
-            notes = ""
-            startTime = nil
-            endTime = nil
-
-            // Create new DonationEntity to edit
-            // We have to update the context so we have new data to work with
-            // If we don't do this, donations that we reset will still exist and get saved when we call context.save()
-            // This is bc we were making new DonationEntity's in the same context
-            context = provider.newContext
-            donation = DonationEntity(context: context)
-        }
-
-        private func fieldsValidated() -> Bool {
-            !(amountText.isEmpty) && !(proteinText.isEmpty) && !(compensationText.isEmpty)
-        }
-
-        func incrementCycleCount() {
-            cycleCount += 1
-            donation.cycleCount = cycleCount
-
-			if #available(iOS 16.2, *) {
-				updateLiveActivity()
-			}
-
-			hapticImpact(.rigid)
-        }
-
-        func undoCycleCount() {
-            if canUndoCycleCount {
-                cycleCount -= 1
-                donation.cycleCount = cycleCount
-
-				if #available(iOS 16.2, *) {
-					updateLiveActivity()
-				}
-            }
-
-			hapticImpact(.rigid)
-        }
+		// MARK: - Private Functions
+		private func fieldsValidated() -> Bool {
+			!(amountText.isEmpty) && !(proteinText.isEmpty) && !(compensationText.isEmpty)
+		}
     }
 }

@@ -38,7 +38,6 @@
 		B595C0542992BBE700F80A68 /* TipProductIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B595C0532992BBE700F80A68 /* TipProductIdentifiers.swift */; };
 		B595C0562992BC7D00F80A68 /* TipStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B595C0552992BC7D00F80A68 /* TipStore.swift */; };
 		B5A61DAE297ECD6A0065FADC /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A61DAD297ECD6A0065FADC /* ModelTests.swift */; };
-		B5A61DB0297F261A0065FADC /* DTFormTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A61DAF297F261A0065FADC /* DTFormTextFieldStyle.swift */; };
 		B5C208E329B7AFAD00CFEFDD /* DonorTrack.docc in Sources */ = {isa = PBXBuildFile; fileRef = B5C208E229B7AFAD00CFEFDD /* DonorTrack.docc */; };
 		B5CDFA97298DACE4005072BC /* CheckmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CDFA96298DACE4005072BC /* CheckmarkView.swift */; };
 		B5D65E1C29DC65D500AF0D2E /* WhiteGroupBoxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D65E1B29DC65D500AF0D2E /* WhiteGroupBoxStyle.swift */; };
@@ -119,7 +118,6 @@
 		B595C0552992BC7D00F80A68 /* TipStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipStore.swift; sourceTree = "<group>"; };
 		B5A61DA4297ECD200065FADC /* DonorTrackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DonorTrackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5A61DAD297ECD6A0065FADC /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
-		B5A61DAF297F261A0065FADC /* DTFormTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTFormTextFieldStyle.swift; sourceTree = "<group>"; };
 		B5C208E229B7AFAD00CFEFDD /* DonorTrack.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = DonorTrack.docc; sourceTree = "<group>"; };
 		B5CDFA96298DACE4005072BC /* CheckmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckmarkView.swift; sourceTree = "<group>"; };
 		B5D65E1B29DC65D500AF0D2E /* WhiteGroupBoxStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteGroupBoxStyle.swift; sourceTree = "<group>"; };
@@ -234,8 +232,6 @@
 		B51C4BE72973841800FEEF50 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				B51C4BE22973008500FEEF50 /* ValueField.swift */,
-				B5A61DAF297F261A0065FADC /* DTFormTextFieldStyle.swift */,
 				B5CDFA96298DACE4005072BC /* CheckmarkView.swift */,
 			);
 			path = Components;
@@ -245,6 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				B53C99472A01CC4C0034EE90 /* NewDonation.swift */,
+				B51C4BE22973008500FEEF50 /* ValueField.swift */,
 				B51C4BEB2974BB6000FEEF50 /* NewDonationViewModel.swift */,
 				B51C4BC92972049800FEEF50 /* NewDonationView.swift */,
 			);
@@ -504,7 +501,6 @@
 				B595C0562992BC7D00F80A68 /* TipStore.swift in Sources */,
 				B5359EC3298EAE4600566111 /* SettingsView.swift in Sources */,
 				B51C4BEC2974BB6000FEEF50 /* NewDonationViewModel.swift in Sources */,
-				B5A61DB0297F261A0065FADC /* DTFormTextFieldStyle.swift in Sources */,
 				B595C04C29929B3600F80A68 /* TipJarView.swift in Sources */,
 				B5359EC5298EB5D400566111 /* Symbols.swift in Sources */,
 				B51C4BD22972056900FEEF50 /* DonationsDataModel.xcdatamodeld in Sources */,
