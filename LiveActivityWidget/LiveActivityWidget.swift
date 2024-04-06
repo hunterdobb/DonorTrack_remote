@@ -12,6 +12,7 @@ import SwiftUI
 struct LiveActivityWidget: Widget {
 	var body: some WidgetConfiguration {
 		ActivityConfiguration(for: NewDonationAttributes.self) { context in
+			// Live Activity
 			LiveActivityWidgetView(context: context)
 		} dynamicIsland: { context in
 			DynamicIsland {
@@ -35,7 +36,6 @@ struct LiveActivityWidget: Widget {
 				DynamicIslandExpandedRegion(.trailing) {
 					Label {
 						Text(context.state.startTime, style: .timer)
-//						Text("1:10:22")
 							.bold()
 					} icon: {
 						Image(systemName: "timer")
@@ -56,12 +56,9 @@ struct LiveActivityWidget: Widget {
 				}
 
 				DynamicIslandExpandedRegion(.bottom) {
-//					HStack(spacing: 0) {
-//						Text("Started: ")
-//						Text(context.state.startTime, style: .time)
-//					}
-//					.bold()
-//					.fontDesign(.rounded)
+					Text("Start: \(context.state.startTime, style: .time)")
+						.bold()
+						.fontDesign(.rounded)
 				}
 			} compactLeading: {
 				IconView(context: context)
@@ -103,21 +100,31 @@ struct CompactTimerView: View {
 	}
 }
 
+// MARK: - Live Activity
 struct LiveActivityWidgetView: View {
 	let context: ActivityViewContext<NewDonationAttributes>
 
 	var body: some View {
 		HStack(alignment: .center) {
 			VStack(alignment: .leading) {
-				Text("Donating Now")
+				Text("Start: \(context.state.startTime, style: .time)")
 					.foregroundColor(.white)
-					.font(.title2)
+					.lineLimit(1)
+					.minimumScaleFactor(0.5)
+					.font(.title)
 					.bold()
 
-				Text("Cycle: \(context.state.cycleCount)")
-					.foregroundColor(.white)
-					.opacity(0.85)
-					.font(.headline)
+				Label {
+					Text("\(context.state.cycleCount)")
+						.bold()
+				} icon: {
+					Image(systemName: "repeat")
+						.font(.headline)
+				}
+				.font(.title2)
+				.bold()
+				.foregroundStyle(.yellow)
+				.fontDesign(.rounded)
 			}
 			.padding([.leading, .top, .bottom])
 
@@ -133,5 +140,42 @@ struct LiveActivityWidgetView: View {
 				.padding()
 				.activityBackgroundTint(.indigo.opacity(0.8))
 		}
+
+//		VStack(alignment: .center) {
+//			HStack(alignment: .firstTextBaseline) {
+//				Label {
+//					Text("\(context.state.cycleCount)")
+//						.bold()
+//				} icon: {
+//					Image(systemName: "repeat")
+//						.font(.headline)
+//				}
+//				.font(.title)
+//				.bold()
+//				//.padding(.leading)
+//				.foregroundStyle(.yellow)
+//				.fontDesign(.rounded)
+//
+//				Spacer()
+//
+//				Text(context.state.startTime, style: .timer)
+//					.font(.title)
+//					.bold()
+//					.fontDesign(.rounded)
+//					.monospacedDigit()
+//					.foregroundStyle(.yellow)
+//					.multilineTextAlignment(.trailing)
+//					//.padding(.trailing)
+//					.activityBackgroundTint(.indigo.opacity(0.8))
+//			}
+//
+//			Text("Started: \(context.state.startTime, style: .time)")
+//				.foregroundColor(.white)
+//				.fontDesign(.rounded)
+//				.font(.title2)
+//				.bold()
+//				.padding(.top, 1)
+//		}
+//		.padding()
 	}
 }

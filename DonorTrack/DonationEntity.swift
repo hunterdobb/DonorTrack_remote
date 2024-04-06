@@ -8,7 +8,7 @@
 import CoreData
 import SwiftUI
 
-final class DonationEntity: NSManagedObject, Identifiable {
+final public class DonationEntity: NSManagedObject, Identifiable {
     @NSManaged var amountDonated: Int16
     @NSManaged var compensation: Int16
     @NSManaged var cycleCount: Int16
@@ -16,6 +16,7 @@ final class DonationEntity: NSManagedObject, Identifiable {
     @NSManaged var endTime: Date
     @NSManaged var protein: Double
     @NSManaged var notes: String
+	@NSManaged public var allInfo: NSSet?
 
     var durationString: String {
         if endTime >= startTime {
@@ -25,6 +26,14 @@ final class DonationEntity: NSManagedObject, Identifiable {
         return "Invalid Range"
     }
 
+	@objc dynamic
+	var monthString: String {
+		let isSameYear = Calendar.current.isDate(startTime, equalTo: .now, toGranularity: .year)
+		let yearText = isSameYear ? "" : ", \(startTime.formatted(.dateTime.year()))"
+
+		return "\(startTime.formatted(.dateTime.month(.wide)))\(yearText)"
+	}
+
     var avgCycleDurationString: String {
         if cycleCount != 0 {
             return Date.durationFormat.string(from: (endTime.timeIntervalSince(startTime)) / Double(cycleCount)) ?? "Error"
@@ -33,7 +42,7 @@ final class DonationEntity: NSManagedObject, Identifiable {
         return "Error"
     }
 
-    override func awakeFromInsert() {
+	public override func awakeFromInsert() {
         super.awakeFromInsert()
 
         setPrimitiveValue(Date.now, forKey: "startTime")

@@ -15,8 +15,22 @@ struct DonationsListView: View {
 	@Environment(\.requestReview) var requestReview: RequestReviewAction
 	@EnvironmentObject private var reviewsManager: ReviewRequestManager
 
-	// Must be in View, cannot go in vm
 	@FetchRequest(fetchRequest: DonationEntity.all()) var donations
+
+//	@SectionedFetchRequest<String, DonationEntity>(
+//		sectionIdentifier: \DonationEntity.monthString,
+//		sortDescriptors: [SortDescriptor(\.monthString, order: .reverse)]
+//	)
+//	private var sectionDonations: SectionedFetchResults<String, DonationEntity>
+
+	// TODO: refactor this
+	let currencyFormatter: NumberFormatter = {
+		let formatter = NumberFormatter()
+		formatter.numberStyle = .currency
+		formatter.maximumFractionDigits = 0
+		formatter.currencySymbol = Locale.current.currencySymbol ?? ""
+		return formatter
+	}()
 
 	var body: some View {
 		NavigationStack {
@@ -42,6 +56,7 @@ struct DonationsListView: View {
 								} header: { totalHeader }
 								.textCase(nil)
 							}
+
 							ForEach(vm.groupDonationsByMonth(donations), id: \.self) { (months: [DonationEntity]) in
 								Section { // header below, shows month
 									ForEach(months) { donation in
@@ -71,9 +86,7 @@ struct DonationsListView: View {
 				}
 			}
 			.searchable(text: $vm.searchConfig.query, prompt: "Search Notes")
-			.toolbar {
-				ToolbarItem { optionsMenu }
-			}
+			.toolbar(content: optionsMenu)
 			.navigationDestination(for: DonationEntity.self) { donation in
 				DonationDetailView(donation: donation, provider: vm.provider)
 			}
@@ -141,7 +154,7 @@ extension DonationsListView {
 			if vm.searchConfig.filter == .lowProtein {
 				Divider()
 				HStack {
-					Symbols.exclamationmarkCircle
+					Symbols.exclamationMarkCircle
 					Text("Filtered by Low Protein")
 				}
 				.foregroundColor(.orange)
@@ -160,12 +173,15 @@ extension DonationsListView {
 			.bold()
 	}
 
+
+
 	private var totalCompensation: some View {
 		GroupBox {
-			Text(vm.totalEarnedAllTime(donations))
+			Text(currencyFormatter.string(from: NSNumber(value: vm.totalEarnedAllTime(donations))) ?? "")
 				.font(.system(.title, design: .rounded, weight: .bold))
 				.frame(maxWidth: .infinity, alignment: .leading)
 				.padding(.top, 1)
+
 		} label: {
 			Text("Compensation")
 				.foregroundStyle(.green)
@@ -193,7 +209,7 @@ extension DonationsListView {
 	private var filterNotifier: some View {
 		if vm.searchConfig.filter == .lowProtein {
 			HStack {
-				Symbols.exclamationmarkCircle
+				Symbols.exclamationMarkCircle
 				Text("Filtered by Low Protein")
 			}
 			.padding(.bottom, 20)
@@ -202,31 +218,34 @@ extension DonationsListView {
 		}
 	}
 
-	private var optionsMenu: some View {
-		Menu {
-			Picker("Sort", selection: $vm.sort) {
-				Text("Newest First").tag(Sort.newestFirst)
-				Text("Oldest First").tag(Sort.oldestFirst)
-			}
+	@ToolbarContentBuilder
+	private func optionsMenu() -> some ToolbarContent {
+		ToolbarItem {
+			Menu {
+				Picker("Sort", selection: $vm.sort) {
+					Text("Newest First").tag(Sort.newestFirst)
+					Text("Oldest First").tag(Sort.oldestFirst)
+				}
 
-			Picker("Filter Donations", selection: $vm.searchConfig.filter) {
-				Label("Show All", systemImage: "list.bullet")
-					.tag(SearchConfig.Filter.all)
+				Picker("Filter Donations", selection: $vm.searchConfig.filter) {
+					Label("Show All", systemImage: "list.bullet")
+						.tag(SearchConfig.Filter.all)
 
-				Label("Show Low Protein", systemImage: "drop.triangle")
-					.tag(SearchConfig.Filter.lowProtein)
-			}
+					Label("Show Low Protein", systemImage: "drop.triangle")
+						.tag(SearchConfig.Filter.lowProtein)
+				}
 
-			Button {
-				vm.donationToEdit = .empty(context: DataController.shared.newContext)
+				Button {
+					vm.donationToEdit = .empty(context: DataController.shared.newContext)
+				} label: {
+					Label("Add Donation Manually", systemImage: "keyboard")
+				}
 			} label: {
-				Label("Add Donation Manually", systemImage: "keyboard")
+				Label("Options", systemImage: vm.searchConfig.filter == .lowProtein ?
+					  "ellipsis.circle.fill" : "ellipsis.circle")
+				.foregroundColor(vm.searchConfig.filter == .lowProtein ? .orange : .blue)
+				.font(.title3)
 			}
-		} label: {
-			Label("Options", systemImage: vm.searchConfig.filter == .lowProtein ?
-				  "ellipsis.circle.fill" : "ellipsis.circle")
-			.foregroundColor(vm.searchConfig.filter == .lowProtein ? .orange : .blue)
-			.font(.title3)
 		}
 	}
 

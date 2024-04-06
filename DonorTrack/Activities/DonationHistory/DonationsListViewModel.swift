@@ -51,10 +51,10 @@ extension DonationsListView {
 			}
 		}
 
-		func totalEarnedAllTime(_ donations: FetchedResults<DonationEntity>) -> String {
+		func totalEarnedAllTime(_ donations: FetchedResults<DonationEntity>) -> Double {
 			let compensations = donations.map { Int($0.compensation) }
 			let total = compensations.reduce(0, +)
-			return "$\(total)"
+			return Double(total)
 		}
     }
 }

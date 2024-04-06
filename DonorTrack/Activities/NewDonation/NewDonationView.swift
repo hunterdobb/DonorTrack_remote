@@ -53,11 +53,9 @@ struct NewDonationView: View {
 							}
 						}
 					}
-					.onAppear {
-						// This fixes a bug where the check mark after saving would stay on the
-						// screen if the user quickly changed tabs.
-						shouldShowSuccess = false
-					}
+					// This fixes a bug where the check mark after saving would stay on the
+					// screen if the user quickly changed tabs.
+					.onAppear { shouldShowSuccess = false }
 					.overlay(content: successCheckmark)
 					.onChange(of: vm.donationState) { state in
                         // This is a temporary fix to make the timer start updating
@@ -230,14 +228,14 @@ extension NewDonationView {
         .id("notes")
     }
 
-    private var startDonationTip: some View {
-        Text("Tap Start Donation below when your donation begins")
-            .foregroundColor(.secondary)
-            .font(.headline)
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
-    }
+//    private var startDonationTip: some View {
+//        Text("Tap Start Donation below when your donation begins")
+//            .foregroundColor(.secondary)
+//            .font(.headline)
+//            .frame(maxWidth: .infinity)
+//            .padding()
+//            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+//    }
 
     private var cycleCountView: some View {
         HStack {
@@ -296,9 +294,7 @@ extension NewDonationView {
 					}
 
 				}
-			}
-
-			if vm.donationState == .finished {
+			} else if vm.donationState == .finished {
                 HStack {
                     Text("Time")
                     Spacer()
@@ -322,33 +318,16 @@ extension NewDonationView {
 
 	@ViewBuilder
 	private var donationDuration: some View {
-		if vm.startTime != Date.distantFuture.timeIntervalSince1970 {
-			HStack {
-				Text("Duration").font(.headline)
-				Spacer()
-				if vm.donationState == .started {
-					// on-going
-					Text(Date(timeIntervalSince1970: vm.startTime), style: .timer)
-						.monospacedDigit()
-						.bold()
-						.foregroundColor(.secondary)
-				} else {
-					// finished
-					if vm.endTime != Date.distantFuture.timeIntervalSince1970 {
-						Text(vm.donationDurationString)
-							.font(.headline)
-							.foregroundColor(.secondary)
-
-					}
-				}
-
-			}
-		} else {
-			// not started
-			HStack {
-				Text("Duration").font(.headline)
-				Spacer()
-				Text("-:--")
+		HStack {
+			Text("Duration").font(.headline)
+			Spacer()
+			if vm.donationState != .finished { // idle or started
+				Text(vm.donationState == .idle ? "-:--" : "\(Date(timeIntervalSince1970: vm.startTime), style: .timer)")
+					.monospacedDigit()
+					.foregroundColor(.secondary)
+			} else { // finished
+				Text(vm.donationDurationString)
+					.font(.headline)
 					.foregroundColor(.secondary)
 			}
 		}

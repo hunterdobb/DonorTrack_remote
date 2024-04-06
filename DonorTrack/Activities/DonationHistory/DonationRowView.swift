@@ -36,7 +36,7 @@ struct DonationRowView: View {
                 HStack(spacing: 8) {
 					Text("\(donation.protein, specifier: "%.1f")")
 
-					Symbols.chevronforward
+					Symbols.chevronForward
                         .foregroundColor(.secondary.opacity(0.6))
                 }
             }
