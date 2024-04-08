@@ -24,24 +24,32 @@ final class AppReviewRequestTests: XCTestCase {
 	}
 
 	func testAppIsValidForRequestOnFreshLaunch() {
-		XCTAssertTrue(sut.canAskForReview(donationCount: sut.limit),
-					  "The user has reached the limit (\(sut.limit)) they should be prompted to review")
+		XCTAssertTrue(
+			sut.canAskForReview(donationCount: sut.limit),
+			"The user has reached the limit (\(sut.limit)) they should be prompted to review"
+		)
 	}
 
 	func testAppIsInvalidForRequestOnFreshLaunch() {
 		let limit = 0
-		XCTAssertFalse(sut.canAskForReview(donationCount: limit),
-					   "The user hasn't reached the limit (\(sut.limit)) they shouldn't be prompted to review")
+		XCTAssertFalse(
+			sut.canAskForReview(donationCount: limit),
+			"The user hasn't reached the limit (\(sut.limit)) they shouldn't be prompted to review"
+		)
 	}
 
 	func testAppIsInvalidForRequestAfterLimitReached() {
 		var limit = sut.limit
-		XCTAssertTrue(sut.canAskForReview(donationCount: sut.limit),
-					  "The user has reached the limit (\(sut.limit)) they should be prompted to review")
+		XCTAssertTrue(
+			sut.canAskForReview(donationCount: sut.limit),
+			"The user has reached the limit (\(sut.limit)) they should be prompted to review"
+		)
 
 		limit *= 2
-		XCTAssertFalse(sut.canAskForReview(donationCount: limit),
-					  "The user should not be prompted to review in the same version.")
+		XCTAssertFalse(
+			sut.canAskForReview(donationCount: limit),
+			"The user should not be prompted to review in the same version."
+		)
 	}
 
 	func testAppIsInvalidForRequestForNewVersion() {
@@ -49,9 +57,11 @@ final class AppReviewRequestTests: XCTestCase {
 		let newVersion = "1.1"
 
 		var limit = sut.limit
-		let canAskForReview = sut.canAskForReview(donationCount: limit,
-												  lastReviewedVersion: nil,
-												  currentVersion: oldVersion)
+		let canAskForReview = sut.canAskForReview(
+			donationCount: limit,
+			lastReviewedVersion: nil,
+			currentVersion: oldVersion
+		)
 		XCTAssertTrue(canAskForReview,
 					  "The user has hit the limit (\(sut.limit)) they should be prompted to review")
 

@@ -8,26 +8,27 @@
 import XCTest
 @testable import DonorTrack
 
-final class ModelTests: XCTestCase {
-    private var provider: DataController!
-
-    override func setUp() {
-        provider = .shared
-    }
-
-    override func tearDown() {
-        provider = nil
-    }
+final class ModelTests: BaseTestCase {
+//    private var provider: DataController!
+//
+//    override func setUp() {
+//        provider = .shared
+//    }
+//
+//    override func tearDown() {
+//        provider = nil
+//    }
 
     func testDonationIsEmpty() {
-        let donation = DonationEntity.empty(context: provider.viewContext)
+//        let donation = DonationEntity.empty(context: provider.viewContext)
+		let donation = dataController.newDonation()
         XCTAssertEqual(donation.amountDonated, 0)
         XCTAssertEqual(donation.protein, 0)
         XCTAssertEqual(donation.compensation, 0)
         XCTAssertEqual(donation.cycleCount, 0)
-        XCTAssertEqual(donation.notes, "")
-        XCTAssertTrue(Calendar.current.isDateInToday(donation.startTime))
-        XCTAssertTrue(Calendar.current.isDateInToday(donation.endTime))
+        XCTAssertEqual(donation.donationNotes, "")
+        XCTAssertTrue(Calendar.current.isDateInToday(donation.donationStartTime))
+        XCTAssertTrue(Calendar.current.isDateInToday(donation.donationEndTime))
     }
 
     // I don't have an isValid function on my model
@@ -40,15 +41,15 @@ final class ModelTests: XCTestCase {
 //    }
 
     func testDurationStringIsValid() {
-        let donation = DonationEntity.empty()
+		let donation = dataController.newDonation()
         let oneMinTwentySeconds = 80.0
 
-        donation.endTime = donation.startTime.advanced(by: oneMinTwentySeconds)
+        donation.donationEndTime = donation.donationStartTime.advanced(by: oneMinTwentySeconds)
         XCTAssertEqual(donation.durationString, "1m 20s")
     }
 
     func testDurationStringIsNotValid() {
-        let donation = DonationEntity.empty()
+        let donation = dataController.newDonation()
         let oneMinTwentySeconds = 80.0
 
         donation.startTime = Date.now.advanced(by: oneMinTwentySeconds)
@@ -56,34 +57,29 @@ final class ModelTests: XCTestCase {
     }
 
     func testAvgCycleDurationStringIsValid() {
-        let donation = DonationEntity.empty()
+        let donation = dataController.newDonation()
         let fiveMinsThirtyTwoSeconds = 332.0
 
         // 332 / 5 = 66.4 = 1m 6s
         donation.cycleCount = 5
-        donation.endTime = donation.endTime.advanced(by: fiveMinsThirtyTwoSeconds)
+        donation.endTime = donation.donationEndTime.advanced(by: fiveMinsThirtyTwoSeconds)
         XCTAssertEqual(donation.avgCycleDurationString, "1m 6s")
     }
 
     func testAvgCycleDurationStringIsNotValid() {
-        let donation = DonationEntity.empty()
+        let donation = dataController.newDonation()
         donation.cycleCount = 0
         XCTAssertEqual(donation.avgCycleDurationString, "Error")
     }
 
     func testMakeDonationsPreviewIsValid() {
         let count = 50
-        let donations = DonationEntity.makePreview(count: count, in: provider.viewContext)
+		dataController.createSampleData(count: count)
 
-        for i in 0..<donations.count {
-            let donation = donations[i]
-
-            XCTAssertTrue(donation.amountDonated >= 690 && donation.amountDonated <= 695)
-            XCTAssertTrue(donation.cycleCount == 8 || donation.cycleCount == 9)
-            XCTAssertTrue(donation.compensation == 50 || donation.compensation == 80)
-            XCTAssertTrue(donation.protein >= 6.0 && donation.protein <= 7.2)
-            XCTAssertEqual(donation.notes, "This is an example donation for previews \(i)")
-        }
+		XCTAssertEqual(
+			dataController.count(for: DonationEntity.fetchRequest()), count,
+			"There should be \(count) sample donations"
+		)
     }
 
     func testFilterLowProteinDonationsRequestIsValid() {

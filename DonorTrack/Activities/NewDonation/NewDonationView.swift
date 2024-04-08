@@ -122,7 +122,7 @@ struct NewDonationView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             let preview = DataController.shared
-			NewDonationView(vm: .init(provider: preview))
+			NewDonationView(vm: .init(dataController: preview))
                 .environment(\.managedObjectContext, preview.viewContext)
         }
     }

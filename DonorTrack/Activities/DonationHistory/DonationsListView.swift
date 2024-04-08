@@ -9,7 +9,10 @@ import StoreKit
 import SwiftUI
 
 struct DonationsListView: View {
-	@ObservedObject var vm: ViewModel
+	//	@ObservedObject var vm: ViewModel
+	@StateObject var vm: ViewModel
+	@EnvironmentObject var dataController: DataController
+	@State private var showEditNewDonation = false
 
 	// Environment value to call as a function to trigger review dialog
 	@Environment(\.requestReview) var requestReview: RequestReviewAction
@@ -17,11 +20,11 @@ struct DonationsListView: View {
 
 	@FetchRequest(fetchRequest: DonationEntity.all()) var donations
 
-//	@SectionedFetchRequest<String, DonationEntity>(
-//		sectionIdentifier: \DonationEntity.monthString,
-//		sortDescriptors: [SortDescriptor(\.monthString, order: .reverse)]
-//	)
-//	private var sectionDonations: SectionedFetchResults<String, DonationEntity>
+	//	@SectionedFetchRequest<String, DonationEntity>(
+	//		sectionIdentifier: \DonationEntity.monthString,
+	//		sortDescriptors: [SortDescriptor(\.monthString, order: .reverse)]
+	//	)
+	//	private var sectionDonations: SectionedFetchResults<String, DonationEntity>
 
 	// TODO: refactor this
 	let currencyFormatter: NumberFormatter = {
@@ -31,6 +34,11 @@ struct DonationsListView: View {
 		formatter.currencySymbol = Locale.current.currencySymbol ?? ""
 		return formatter
 	}()
+
+	init(dataController: DataController) {
+		let viewModel = ViewModel(dataController: dataController)
+		_vm = StateObject(wrappedValue: viewModel)
+	}
 
 	var body: some View {
 		NavigationStack {
@@ -53,42 +61,41 @@ struct DonationsListView: View {
 									.listRowBackground(Color.clear)
 									.listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
 									.listRowSeparator(.hidden)
-								} header: { totalHeader }
+								} header: {
+									totalHeader
+								}
 								.textCase(nil)
 							}
 
 							ForEach(vm.groupDonationsByMonth(donations), id: \.self) { (months: [DonationEntity]) in
 								Section { // header below, shows month
 									ForEach(months) { donation in
-										// Workaround to hide default list indicator
-										// I do this so I can move to upper right corner
-										ZStack(alignment: .leading) {
-											NavigationLink(value: donation) {
-												EmptyView()
-											}.opacity(0)
-
-											DonationRowView(donation: donation,
-															provider: vm.provider,
-															showNotes: $vm.showNotes)
-												.swipeActions(allowsFullSwipe: false) {
-													deleteButton(donation: donation)
-													editButton(donation: donation)
-												}
+										NavigationLink(value: donation) {
+											DonationRowView(
+												donation: donation,
+												dataController: dataController,
+												showNotes: $vm.showNotes
+											)
+											.swipeActions(allowsFullSwipe: false) {
+												deleteButton(donation: donation)
+												editButton(donation: donation)
+											}
 										}
 									}
-								} header: { monthHeader(months: months) }
+								} header: {
+									monthHeader(months: months)
+								}
 								.textCase(nil)
-							} // ForEach
-						} // List
-
-						filterNotifier
-					} // VStack
+							}
+						}
+					}
+					filterNotifier
 				}
 			}
 			.searchable(text: $vm.searchConfig.query, prompt: "Search Notes")
 			.toolbar(content: optionsMenu)
 			.navigationDestination(for: DonationEntity.self) { donation in
-				DonationDetailView(donation: donation, provider: vm.provider)
+				DonationDetailView(donation: donation)
 			}
 			.onChange(of: vm.searchConfig) { newConfig in
 				donations.nsPredicate = DonationEntity.filter(with: newConfig)
@@ -106,34 +113,45 @@ struct DonationsListView: View {
 			.sheet(item: $vm.donationToEdit) {
 				vm.donationToEdit = nil // onDismiss
 			} content: { donation in
-				EditDonationView(vm: .init(provider: vm.provider, donation: donation))
+				EditDonationView(dataController: dataController, donation: donation)
+	//			EditDonationView(vm: .init(provider: vm.dataController, donation: donation))
 			}
 			.onAppear {
 				if reviewsManager.canAskForReview(donationCount: donations.count) {
 					requestReview()
 				}
 			}
+			.sheet(isPresented: $showEditNewDonation) {
+				EditDonationView(dataController: dataController)
+			}
 		}
 	}
 }
 
-// MARK: - Preview
-struct DonationsListView_Previews: PreviewProvider {
-	static var previews: some View {
-		let preview = DataController.shared
-		DonationsListView(vm: .init(provider: .shared))
-			.environment(\.managedObjectContext, preview.viewContext)
-			.environmentObject(ReviewRequestManager())
-			.previewDisplayName("List With Data")
-			.onAppear { DonationEntity.makePreview(count: 10, in: preview.viewContext) }
 
-		let emptyPreview = DataController.shared
-		DonationsListView(vm: .init(provider: .shared))
-			.environment(\.managedObjectContext, emptyPreview.viewContext)
-			.environmentObject(ReviewRequestManager())
-			.previewDisplayName("List With No Data")
-	}
+// MARK: - Preview
+#Preview("List With Data") {
+	//	let preview = DataController.shared
+	return DonationsListView(dataController: .preview)
+		.environmentObject(DataController.preview)
+		.environmentObject(ReviewRequestManager())
+	//		.environment(\.managedObjectContext, preview.viewContext)
+
+	//		.onAppear { DonationEntity.makePreview(count: 10, in: preview.viewContext) }
+
+	//	let preview = DataController.shared
+	//	return DonationsListView(vm: .init(dataController: .preview))
+	//		.environment(\.managedObjectContext, preview.viewContext)
+	//		.environmentObject(ReviewRequestManager())
+	//		.onAppear { DonationEntity.makePreview(count: 10, in: preview.viewContext) }
 }
+
+//#Preview("List With No Data") {
+//	let emptyPreview = DataController.shared
+//	return DonationsListView(vm: .init(dataController: .emptyPreview))
+//		.environment(\.managedObjectContext, emptyPreview.viewContext)
+//		.environmentObject(ReviewRequestManager())
+//}
 
 // MARK: - Views
 extension DonationsListView {
@@ -172,8 +190,6 @@ extension DonationsListView {
 			.font(.headline)
 			.bold()
 	}
-
-
 
 	private var totalCompensation: some View {
 		GroupBox {
@@ -220,7 +236,7 @@ extension DonationsListView {
 
 	@ToolbarContentBuilder
 	private func optionsMenu() -> some ToolbarContent {
-		ToolbarItem {
+		ToolbarItem(placement: .primaryAction) {
 			Menu {
 				Picker("Sort", selection: $vm.sort) {
 					Text("Newest First").tag(Sort.newestFirst)
@@ -236,7 +252,7 @@ extension DonationsListView {
 				}
 
 				Button {
-					vm.donationToEdit = .empty(context: DataController.shared.newContext)
+					showEditNewDonation = true
 				} label: {
 					Label("Add Donation Manually", systemImage: "keyboard")
 				}
@@ -247,14 +263,25 @@ extension DonationsListView {
 				.font(.title3)
 			}
 		}
+
+		ToolbarItem {
+#if DEBUG
+			Button {
+				dataController.deleteAll()
+				dataController.createSampleData(count: 50)
+			} label: {
+				Label("ADD SAMPLES", systemImage: "flame")
+			}
+#endif
+		}
 	}
 
 	@ViewBuilder
 	private func monthHeader(months: [DonationEntity]) -> some View {
-		let isSameYear = Calendar.current.isDate(months[0].startTime, equalTo: .now, toGranularity: .year)
-		let yearText = isSameYear ? "" : ", \(months[0].startTime.formatted(.dateTime.year()))"
+		let isSameYear = Calendar.current.isDate(months[0].donationStartTime, equalTo: .now, toGranularity: .year)
+		let yearText = isSameYear ? "" : ", \(months[0].donationStartTime.formatted(.dateTime.year()))"
 
-		Text("\(months[0].startTime, format: .dateTime.month(.wide))\(yearText)")
+		Text("\(months[0].donationStartTime, format: .dateTime.month(.wide))\(yearText)")
 			.foregroundColor(.secondary)
 			.font(.headline)
 			.bold()
@@ -262,12 +289,7 @@ extension DonationsListView {
 
 	private func deleteButton(donation: DonationEntity) -> some View {
 		Button(role: .destructive) {
-			do {
-				// using provider.newContext is safer and prevents crashing
-				try vm.provider.delete(donation, in: vm.provider.newContext)
-			} catch {
-				print(error)
-			}
+			vm.dataController.delete(donation)
 		} label: {
 			Label("Delete", systemImage: "trash")
 		}
@@ -282,3 +304,4 @@ extension DonationsListView {
 		.tint(.orange)
 	}
 }
+

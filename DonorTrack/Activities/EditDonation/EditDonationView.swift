@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct EditDonationView: View {
-    @ObservedObject var vm: ViewModel
+	@EnvironmentObject var dataController: DataController
+//    @ObservedObject var vm: ViewModel
+	@StateObject var vm: ViewModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: FocusedField?
 
@@ -19,20 +21,39 @@ struct EditDonationView: View {
         case donationAmount, protein, compensation, notes, cycle
     }
 
+	init(dataController: DataController, donation: DonationEntity? = nil) {
+		let viewModel = ViewModel(dataController: dataController, donation: donation)
+		self._vm = StateObject(wrappedValue: viewModel)
+	}
+
     var body: some View {
         NavigationStack {
             List {
 				Section("Time", content: timeSection)
 				Section("Info", content: infoSection)
                 Section("Notes", content: notesSection)
+
+				if vm.isNew == false {
+					Button("Delete Donation", systemImage: "trash", role: .destructive) {
+						dataController.delete(vm.donation)
+					}
+					.foregroundStyle(.red)
+				}
             }
             .navigationTitle(vm.isNew ? Text("Manual Entry") : Text("Edit Donation"))
             .navigationBarTitleDisplayMode(.inline)
 			.scrollDismissesKeyboard(.interactively)
-			.toolbar { cancelAction; doneAction }
+			.toolbar {
+				cancelAction
+				doneAction
+			}
         }
-		.onAppear { vm.donationDay = vm.donation.startTime }
-		.onReceive(vm.$donationDay) { newDate in vm.updateDay(using: newDate) }
+		.onAppear {
+			vm.donationDay = vm.donation.donationStartTime
+		}
+		.onReceive(vm.$donationDay) { newDate in
+			vm.updateDay(using: newDate)
+		}
 		.alert(alertTitle, isPresented: $showingAlert) { }
     }
 }
@@ -40,24 +61,32 @@ struct EditDonationView: View {
 struct EditDonationView_Previews: PreviewProvider {
     static var previews: some View {
         // Preview without data
-        let previewEmpty = DataController.shared
+//        let previewEmpty = DataController.shared
         NavigationStack {
-            EditDonationView(vm: .init(provider: .shared))
-                .environment(\.managedObjectContext, previewEmpty.viewContext)
+			EditDonationView(dataController: .preview, donation: .example)
+				.environmentObject(DataController.preview)
+//            EditDonationView(vm: .init(provider: .shared))
+//                .environment(\.managedObjectContext, previewEmpty.viewContext)
         }
         .previewDisplayName("EditView Without Data")
 
         // Preview with data
-        let previewProvider = DataController.shared
-        NavigationStack {
-            // This doesn't fully work bc in the vm we use provider.newContext, so they're accessing
-            // separate contexts.
-            // As a work around I added the preview bool to use the provider.viewContext instead.
-            // For it to fully work, I somehow need to create the preview data on the same newContext used
-            // in the vm
-            EditDonationView(vm: .init(provider: previewProvider, donation: .preview(context: previewProvider.viewContext), preview: true))
-        }
-        .previewDisplayName("EditView With Data")
+//        let previewProvider = DataController.shared
+//        NavigationStack {
+//            // This doesn't fully work bc in the vm we use provider.newContext, so they're accessing
+//            // separate contexts.
+//            // As a work around I added the preview bool to use the provider.viewContext instead.
+//            // For it to fully work, I somehow need to create the preview data on the same newContext used
+//            // in the vm
+//			EditDonationView(
+//				vm: .init(
+//					provider: previewProvider,
+//					donation: .example,
+//					preview: true
+//				)
+//			)
+//        }
+//        .previewDisplayName("EditView With Data")
     }
 }
 
@@ -65,8 +94,8 @@ extension EditDonationView {
 	@ViewBuilder
 	private func timeSection() -> some View {
 		DatePicker("Date", selection: $vm.donationDay, in: ...Date(),displayedComponents: .date)
-		DatePicker("Start Time", selection: $vm.donation.startTime, displayedComponents: .hourAndMinute)
-		DatePicker("End Time", selection: $vm.donation.endTime, displayedComponents: .hourAndMinute)
+		DatePicker("Start Time", selection: $vm.donation.donationStartTime, displayedComponents: .hourAndMinute)
+		DatePicker("End Time", selection: $vm.donation.donationEndTime, displayedComponents: .hourAndMinute)
 
 		// Duration Row
 		LabeledContent {
@@ -85,7 +114,7 @@ extension EditDonationView {
 	}
 
 	private func notesSection() -> some View {
-		TextField("Add notes here", text: $vm.donation.notes, axis: .vertical)
+		TextField("Add notes here", text: $vm.donation.donationNotes, axis: .vertical)
 			.focused($focusedField, equals: .notes)
 	}
 

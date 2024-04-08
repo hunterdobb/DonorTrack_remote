@@ -22,31 +22,47 @@ enum Sort {
 }
 
 extension DonationsListView {
+	@dynamicMemberLookup
     @MainActor
     class ViewModel: ObservableObject {
         private let context: NSManagedObjectContext
-        let provider: DataController // I made this un-private to pass it into another view?
+        var dataController: DataController // I made this un-private to pass it into another view?
 
         @Published var showNotes = false
-
         @Published var donationToEdit: DonationEntity?
-
         @Published var searchConfig = SearchConfig()
         @Published var sort: Sort = .newestFirst
 
-        init(provider: DataController, donation: DonationEntity? = nil) {
-            self.provider = provider
-            self.context = provider.viewContext
+        init(dataController: DataController) {
+            self.dataController = dataController
+            self.context = dataController.viewContext
         }
+
+		subscript<Value>(dynamicMember keyPath: KeyPath<DataController, Value>) -> Value {
+			dataController[keyPath: keyPath]
+		}
+
+		subscript<Value>(dynamicMember keyPath: ReferenceWritableKeyPath<DataController, Value>) -> Value {
+			get { dataController[keyPath: keyPath] }
+			set { dataController[keyPath: keyPath] = newValue }
+		}
+
+//		func newDonationToEdit() {
+//			let tempContext = NSManagedObjectContext(.mainQueue)
+//			tempContext.parent = dataController.container.viewContext
+//			print(tempContext)
+//			donationToEdit = DonationEntity(context: tempContext)
+////			donationToEdit = dataController.newTemporaryDonation()
+//		}
 
 		func groupDonationsByMonth(_ result: FetchedResults<DonationEntity>) -> [[DonationEntity]] {
 			Dictionary(grouping: result) { (donation: DonationEntity) in
-				donation.startTime.month
+				donation.donationStartTime.month
 			}.values.sorted {
 				if sort == .newestFirst {
-					return $0[0].startTime > $1[0].startTime
+					return $0[0].donationStartTime > $1[0].donationStartTime
 				} else {
-					return $0[0].startTime < $1[0].startTime
+					return $0[0].donationStartTime < $1[0].donationStartTime
 				}
 			}
 		}
@@ -55,6 +71,15 @@ extension DonationsListView {
 			let compensations = donations.map { Int($0.compensation) }
 			let total = compensations.reduce(0, +)
 			return Double(total)
+		}
+
+		func delete(_ offsets: IndexSet) {
+			let donations = (try? dataController.container.viewContext.fetch(DonationEntity.all())) ?? []
+
+			for offset in offsets {
+				let item = donations[offset]
+				dataController.delete(item)
+			}
 		}
     }
 }

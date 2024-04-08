@@ -14,6 +14,8 @@ struct DonorTrackApp: App {
 	@StateObject private var reviewsManager = ReviewRequestManager()
 	@State private var showThanks = false
 
+	@StateObject var dataController = DataController()
+
 	init() {
 		// Enables haptics on first run
 		UserDefaults.standard.register(defaults: [
@@ -25,7 +27,8 @@ struct DonorTrackApp: App {
         WindowGroup {
             ContentView()
 				.environmentObject(reviewsManager)
-                .environment(\.managedObjectContext, DataController.shared.viewContext)
+				.environment(\.managedObjectContext, dataController.container.viewContext)
+				.environmentObject(dataController)
 				.environmentObject(store)
 				// TODO: This alert should probably be moved
 				.alert("Thank You! 😀", isPresented: $showThanks) {

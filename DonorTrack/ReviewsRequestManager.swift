@@ -12,7 +12,7 @@ final class ReviewRequestManager: ObservableObject {
 
 	private let userDefaults: UserDefaults
 	private(set) var reviewLink = URL(string: "https://apps.apple.com/app/id1667108011?action=write-review")
-	
+
 	let limit = 10
 
 	init(userDefaults: UserDefaults = .standard) {
@@ -31,12 +31,15 @@ final class ReviewRequestManager: ObservableObject {
 		lastReviewedVersion: String? = nil,
 		currentVersion: String? = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
 	) -> Bool {
-		let lastVersionPromptedForReview = lastReviewedVersion ?? userDefaults.string(forKey: UDKeys.lastVersionPromptedForReviewKey)
+		let lastVersionPromptedForReview = lastReviewedVersion ?? userDefaults.string(
+			forKey: UDKeys.lastVersionPromptedForReviewKey
+		)
 
 		// Get the current bundle version for the app. (Similar to Apple sample app, although we're passing
 		// the currentVersion in as a function parameter)
-		guard let currentVersion = currentVersion
-			else { fatalError("Expected to find a bundle version in the info dictionary.") }
+		guard let currentVersion = currentVersion else {
+			fatalError("Expected to find a bundle version in the info dictionary.")
+		}
 
 		let hasReachedThreshold = donationCount.isMultiple(of: limit) && (donationCount != 0)
 		let isNewVersion = currentVersion != lastVersionPromptedForReview

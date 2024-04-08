@@ -9,7 +9,8 @@ import SwiftUI
 
 struct DonationDetailView: View {
     @ObservedObject var donation: DonationEntity
-	let provider: DataController
+//	let provider: DataController
+	@EnvironmentObject var dataController: DataController
 
     @State private var donationToEdit: DonationEntity?
 
@@ -20,13 +21,14 @@ struct DonationDetailView: View {
             Section("Cycles", content: cyclesSection)
             Section("Notes", content: notesSection)
         }
-        .navigationTitle(Text(donation.startTime, style: .date))
+        .navigationTitle(Text(donation.donationStartTime, style: .date))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { editButton }
         .sheet(item: $donationToEdit) {
 			donationToEdit = nil // onDismiss
         } content: { donation in
-            EditDonationView(vm: .init(provider: provider, donation: donation))
+			EditDonationView(dataController: dataController, donation: donation)
+//            EditDonationView(vm: .init(provider: provider, donation: donation))
         }
     }
 }
@@ -35,7 +37,8 @@ struct DonationDetailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             let previewProvider = DataController.shared
-            DonationDetailView(donation: .preview(context: previewProvider.viewContext), provider: previewProvider)
+			DonationDetailView(donation: .example)
+				.environmentObject(DataController.preview)
         }
     }
 }
@@ -44,7 +47,7 @@ extension DonationDetailView {
 	@ViewBuilder
 	private func timeSection() -> some View {
 		LabeledContent {
-			Text("\(donation.startTime, style: .time) - \(donation.endTime, style: .time)")
+			Text("\(donation.donationStartTime, style: .time) - \(donation.donationEndTime, style: .time)")
 		} label: {
 //			HStack {
 //				Image(systemName: "clock")
@@ -117,7 +120,7 @@ extension DonationDetailView {
 
 	@ViewBuilder
 	private func notesSection() -> some View {
-		Text(donation.notes)
+		Text(donation.donationNotes)
 			.foregroundColor(.secondary)
 	}
 

@@ -6,7 +6,7 @@
         <attribute name="note" optional="YES" attributeType="String"/>
         <attribute name="startTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
-    <entity name="DonationEntity" representedClassName=".DonationEntity" syncable="YES">
+    <entity name="DonationEntity" representedClassName="DonationEntity" syncable="YES" codeGenerationType="class">
         <attribute name="amountDonated" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="compensation" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="cycleCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>

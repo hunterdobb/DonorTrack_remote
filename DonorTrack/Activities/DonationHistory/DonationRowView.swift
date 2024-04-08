@@ -22,7 +22,7 @@ struct DonationRowView: View {
     // we would need to mark our donation object as an ObservedObject
     // so the views re-draw
     @ObservedObject var donation: DonationEntity
-    let provider: DataController
+    let dataController: DataController
 
     @Binding var showNotes: Bool
 
@@ -35,9 +35,6 @@ struct DonationRowView: View {
 
                 HStack(spacing: 8) {
 					Text("\(donation.protein, specifier: "%.1f")")
-
-					Symbols.chevronForward
-                        .foregroundColor(.secondary.opacity(0.6))
                 }
             }
 
@@ -46,22 +43,25 @@ struct DonationRowView: View {
     }
 }
 
-struct DonationRowView_Previews: PreviewProvider {
-    static var previews: some View {
-        let previewProvider = DataController.shared
-        DonationRowView(donation: .preview(context: previewProvider.viewContext),
-                        provider: previewProvider, showNotes: .constant(true))
-            .padding()
-            .previewLayout(.sizeThatFits)
-    }
-}
+//struct DonationRowView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let previewProvider = DataController.shared
+//		DonationRowView(
+//			donation: .example,
+//			dataController: previewProvider,
+//			showNotes: .constant(true)
+//		)
+//            .padding()
+//            .previewLayout(.sizeThatFits)
+//    }
+//}
 
 extension DonationRowView {
     private var dateAndTimeInfo: some View {
         HStack {
             VStack {
-                Text(donation.startTime, format: .dateTime.month())
-                Text(donation.startTime, format: .dateTime.day())
+                Text(donation.donationStartTime, format: .dateTime.month())
+                Text(donation.donationStartTime, format: .dateTime.day())
             }
             .font(.system(.body, design: .rounded))
             .bold()
@@ -69,12 +69,12 @@ extension DonationRowView {
 
             VStack(alignment: .leading) {
                 // day of week
-                Text(donation.startTime, format: .dateTime.weekday(.wide))
+                Text(donation.donationStartTime, format: .dateTime.weekday(.wide))
                     .font(.system(.title3, design: .rounded))
                     .bold()
 
                 HStack {
-                    Text(donation.startTime, style: .time)
+                    Text(donation.donationStartTime, style: .time)
                     Text("(\(donation.durationString))")
                 }
                 .font(.footnote)
@@ -85,8 +85,8 @@ extension DonationRowView {
 
 	@ViewBuilder
 	private var donationNote: some View {
-		if showNotes && !donation.notes.isEmpty {
-			Text(donation.notes)
+		if showNotes && !donation.donationNotes.isEmpty {
+			Text(donation.donationNotes)
 				.font(.caption)
 				.foregroundColor(.secondary)
 				.padding(5)

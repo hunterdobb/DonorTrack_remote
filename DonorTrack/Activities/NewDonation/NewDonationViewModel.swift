@@ -49,10 +49,10 @@ extension NewDonationView {
 
         private var donation: DonationEntity
         private var context: NSManagedObjectContext
-        private let provider: DataController
+        private let dataController: DataController
 
 		enum NewDonationState: Int {
-			// rawValue of Int so it can be saved in @SceneStorage
+			// rawValue of Int so it can be saved in @AppStorage
 			case idle = 0, started, finished
 		}
 
@@ -84,9 +84,9 @@ extension NewDonationView {
 		var canUndoCycleCount: Bool { cycleCount > 0 }
 
 		// MARK: - Init
-        init(provider: DataController, donation: DonationEntity? = nil) {
-            self.provider = provider
-            self.context = provider.newContext
+        init(dataController: DataController, donation: DonationEntity? = nil) {
+            self.dataController = dataController
+            self.context = dataController.newContext
             self.donation = DonationEntity(context: self.context)
         }
 
@@ -153,7 +153,7 @@ extension NewDonationView {
 			// We have to update the context so we have new data to work with
 			// If we don't do this, donations that we reset will still exist and get saved when we call context.save()
 			// This is bc we were making new DonationEntity's in the same context
-			context = provider.newContext
+			context = dataController.newContext
 			donation = DonationEntity(context: context)
 		}
 

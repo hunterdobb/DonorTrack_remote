@@ -8,17 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
-    var provider = DataController.shared
-    
+//    var dataController = DataController.shared
+	@EnvironmentObject var dataController: DataController
+
     var body: some View {
         TabView {
-			NewDonationView(vm: .init(provider: provider))
+			NewDonationView(vm: .init(dataController: dataController))
                 .tabItem {
 					Symbols.plusCircle
                     Text("New Donation")
                 }
             
-            DonationsListView(vm: .init(provider: provider))
+            DonationsListView(dataController: dataController)
                 .tabItem {
 					Symbols.listBullet
                     Text("Donations")
@@ -37,8 +38,9 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let preview = DataController.shared
-        ContentView(provider: preview)
+        ContentView()
+			.environmentObject(DataController.preview)
             .environment(\.managedObjectContext, preview.viewContext)
-            .onAppear { DonationEntity.makePreview(count: 10, in: preview.viewContext) }
+//            .onAppear { DonationEntity.makePreview(count: 10, in: preview.viewContext) }
     }
 }

@@ -13,14 +13,14 @@ extension EditDonationView {
     class ViewModel: ObservableObject {
         @Published var donation: DonationEntity
         @Published var donationDay: Date
-        let isNew: Bool
+        var isNew: Bool
 
         enum SaveError: Error {
             case notFilledIn, invalidDateRange
         }
 
-        private let context: NSManagedObjectContext
-        private let provider: DataController
+        private var tempContext: NSManagedObjectContext? = nil
+        var dataController: DataController
 
         @Published var proteinText = ""
         @Published var compensationText = ""
@@ -31,26 +31,28 @@ extension EditDonationView {
 //        @Published var showingAlert = false
 //        let alertTitle = "Fill out all the info before saving"
 
-        init(provider: DataController, donation: DonationEntity? = nil, preview: Bool = false) {
-            self.provider = provider
+		init(dataController: DataController, donation: DonationEntity? = nil) {
+            self.dataController = dataController
+			self.isNew = donation == nil
 
-            if preview {
-                self.context = provider.viewContext
-            } else {
-                self.context = provider.newContext
-            }
-            
-            if let donation,
-               let existingDonationCopy = provider.exists(donation, in: context) {
-                self.donation = existingDonationCopy
-                self.isNew = false
-                donationDay = existingDonationCopy.startTime
-                populateFields()
-            } else {
-                self.donation = DonationEntity(context: self.context)
-                donationDay = Date()
-                self.isNew = true
-            }
+			if let donation {
+				self.donation = donation
+				donationDay = donation.donationStartTime
+				populateFields()
+			} else {
+				print("NEW")
+				let tempContext = NSManagedObjectContext(.mainQueue)
+				tempContext.parent = dataController.viewContext
+				self.tempContext = tempContext
+				if let context = self.tempContext {
+					self.donation = DonationEntity(context: context)
+				} else {
+					print("ERROR")
+					self.donation = DonationEntity(context: dataController.viewContext)
+				}
+
+				donationDay = .now
+			}
 
         }
 
@@ -60,7 +62,11 @@ extension EditDonationView {
             let calendar = Calendar.current
             let newComponents = calendar.dateComponents([.month, .day, .year], from: newDate)
 
-            let existingStartComponents = calendar.dateComponents([.hour, .minute, .second], from: donation.startTime)
+			let existingStartComponents = calendar.dateComponents(
+				[.hour,	.minute, .second],
+				from: donation.donationStartTime
+			)
+
             var newStartTime = DateComponents()
             newStartTime.month = newComponents.month
             newStartTime.day = newComponents.day
@@ -69,7 +75,7 @@ extension EditDonationView {
             newStartTime.minute = existingStartComponents.minute
             newStartTime.second = existingStartComponents.second
 
-            let existingEndComponents = calendar.dateComponents([.hour, .minute, .second], from: donation.endTime)
+            let existingEndComponents = calendar.dateComponents([.hour, .minute, .second], from: donation.donationEndTime)
             var newEndTime = DateComponents()
             newEndTime.month = newComponents.month
             newEndTime.day = newComponents.day
@@ -94,7 +100,7 @@ extension EditDonationView {
 //            compensationText = String(donation.compensation)
 //            amountText = String(donation.amountDonated)
 //            cycleCountText = String(donation.cycleCount)
-            notes = donation.notes
+            notes = donation.donationNotes
         }
 
         // Used when creating manual donation
@@ -102,7 +108,8 @@ extension EditDonationView {
             if let protein = Double(proteinText),
                let compensation = Int16(compensationText),
                let amountDonated = Int16(amountText),
-               let cycleCount = Int16(cycleCountText) {
+               let cycleCount = Int16(cycleCountText) 
+			{
                 donation.protein = protein
                 donation.compensation = compensation
                 donation.amountDonated = amountDonated
@@ -137,12 +144,21 @@ extension EditDonationView {
             }
         }
 
-        func save() throws {
+		func save() throws {
             if isNew {
                 if fieldsValidated() {
-                    if donation.startTime < donation.endTime {
+                    if donation.donationStartTime < donation.donationEndTime {
                         setData()
-                        try provider.persist(in: context)
+
+						if let context = tempContext {
+							do {
+								try context.save()
+								dataController.save()
+								tempContext = nil
+							} catch {
+								print(error.localizedDescription)
+							}
+						}
                     } else {
                         throw SaveError.invalidDateRange
                     }
@@ -151,9 +167,8 @@ extension EditDonationView {
                 }
             } else {
                 updateData()
-                try provider.persist(in: context)
+                dataController.save()
             }
-
         }
     }
 }

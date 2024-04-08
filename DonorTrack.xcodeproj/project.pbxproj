@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B50D2E482BC1EA4300CBD85D /* DonorTrackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D2E472BC1EA4300CBD85D /* DonorTrackTests.swift */; };
+		B50D2E4A2BC2124D00CBD85D /* Donation+CoreDataHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D2E492BC2124D00CBD85D /* Donation+CoreDataHelpers.swift */; };
 		B51C4BBC2972032800FEEF50 /* DonorTrackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BBB2972032800FEEF50 /* DonorTrackApp.swift */; };
 		B51C4BBE2972032800FEEF50 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C4BBD2972032800FEEF50 /* ContentView.swift */; };
 		B51C4BC02972032900FEEF50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B51C4BBF2972032900FEEF50 /* Assets.xcassets */; };
@@ -83,6 +85,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B50D2E472BC1EA4300CBD85D /* DonorTrackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonorTrackTests.swift; sourceTree = "<group>"; };
+		B50D2E492BC2124D00CBD85D /* Donation+CoreDataHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Donation+CoreDataHelpers.swift"; sourceTree = "<group>"; };
 		B51C4BB82972032800FEEF50 /* DonorTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DonorTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B51C4BBB2972032800FEEF50 /* DonorTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonorTrackApp.swift; sourceTree = "<group>"; };
 		B51C4BBD2972032800FEEF50 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -191,6 +195,7 @@
 				B51C4BBD2972032800FEEF50 /* ContentView.swift */,
 				B541F8C129D6325300915970 /* ReviewsRequestManager.swift */,
 				B51C4BD729720BEC00FEEF50 /* DataController.swift */,
+				B50D2E492BC2124D00CBD85D /* Donation+CoreDataHelpers.swift */,
 				B51C4BD32972090900FEEF50 /* DonationEntity.swift */,
 				B51C4BBF2972032900FEEF50 /* Assets.xcassets */,
 				B51C4BC12972032900FEEF50 /* Preview Content */,
@@ -330,6 +335,7 @@
 		B5A61DA5297ECD200065FADC /* DonorTrackTests */ = {
 			isa = PBXGroup;
 			children = (
+				B50D2E472BC1EA4300CBD85D /* DonorTrackTests.swift */,
 				B5A61DAD297ECD6A0065FADC /* ModelTests.swift */,
 				B541F8C329D6574800915970 /* AppReviewRequestTests.swift */,
 			);
@@ -494,6 +500,7 @@
 				B5C208E329B7AFAD00CFEFDD /* DonorTrack.docc in Sources */,
 				B51C4BDC297215E700FEEF50 /* DonationDetailView.swift in Sources */,
 				B51C4BE32973008500FEEF50 /* ValueField.swift in Sources */,
+				B50D2E4A2BC2124D00CBD85D /* Donation+CoreDataHelpers.swift in Sources */,
 				B5D65E1C29DC65D500AF0D2E /* WhiteGroupBoxStyle.swift in Sources */,
 				B51C4BCA2972049800FEEF50 /* NewDonationView.swift in Sources */,
 				B53C99482A01CC4C0034EE90 /* NewDonation.swift in Sources */,
@@ -517,6 +524,7 @@
 			files = (
 				B5A61DAE297ECD6A0065FADC /* ModelTests.swift in Sources */,
 				B541F8C429D6574800915970 /* AppReviewRequestTests.swift in Sources */,
+				B50D2E482BC1EA4300CBD85D /* DonorTrackTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
