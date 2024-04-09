@@ -15,13 +15,13 @@
 							<key>EndingColumnNumber</key>
 							<string>0</string>
 							<key>EndingLineNumber</key>
-							<string>133</string>
+							<string>127</string>
 							<key>StartingColumnNumber</key>
 							<string>0</string>
 							<key>StartingLineNumber</key>
-							<string>132</string>
+							<string>126</string>
 							<key>Timestamp</key>
-							<string>734278905.786016</string>
+							<string>734396345.832177</string>
 						</dict>
 						<key>rebasable-url</key>
 						<dict>
@@ -45,7 +45,7 @@
 </string>
 						<key>trailing</key>
 						<string>	//	let preview = DataController.shared
-	return DonationsListView(dataController: .preview)
+	DonationsListView(dataController: .preview)
 		.environmentObject(DataController.preview)
 </string>
 					</dict>

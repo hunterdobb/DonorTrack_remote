@@ -8,12 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
-//    var dataController = DataController.shared
 	@EnvironmentObject var dataController: DataController
 
     var body: some View {
         TabView {
-			NewDonationView(vm: .init(dataController: dataController))
+			NewDonationView(dataController: dataController)
                 .tabItem {
 					Symbols.plusCircle
                     Text("New Donation")
@@ -37,10 +36,9 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let preview = DataController.shared
         ContentView()
 			.environmentObject(DataController.preview)
-            .environment(\.managedObjectContext, preview.viewContext)
+//            .environment(\.managedObjectContext, preview.viewContext)
 //            .onAppear { DonationEntity.makePreview(count: 10, in: preview.viewContext) }
     }
 }

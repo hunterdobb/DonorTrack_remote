@@ -26,15 +26,6 @@ struct DonationsListView: View {
 	//	)
 	//	private var sectionDonations: SectionedFetchResults<String, DonationEntity>
 
-	// TODO: refactor this
-	let currencyFormatter: NumberFormatter = {
-		let formatter = NumberFormatter()
-		formatter.numberStyle = .currency
-		formatter.maximumFractionDigits = 0
-		formatter.currencySymbol = Locale.current.currencySymbol ?? ""
-		return formatter
-	}()
-
 	init(dataController: DataController) {
 		let viewModel = ViewModel(dataController: dataController)
 		_vm = StateObject(wrappedValue: viewModel)
@@ -45,6 +36,7 @@ struct DonationsListView: View {
 			ZStack {
 				if donations.isEmpty && vm.searchConfig.query.isEmpty {
 					emptyStateView.padding(.bottom, 100)
+
 				} else if donations.isEmpty && !vm.searchConfig.query.isEmpty {
 					Text("No Results")
 						.frame(maxHeight: .infinity, alignment: .top)
@@ -89,7 +81,9 @@ struct DonationsListView: View {
 							}
 						}
 					}
-					filterNotifier
+					.safeAreaInset(edge: .bottom) {
+						filterNotifier
+					}
 				}
 			}
 			.searchable(text: $vm.searchConfig.query, prompt: "Search Notes")
@@ -132,7 +126,7 @@ struct DonationsListView: View {
 // MARK: - Preview
 #Preview("List With Data") {
 	//	let preview = DataController.shared
-	return DonationsListView(dataController: .preview)
+	DonationsListView(dataController: .preview)
 		.environmentObject(DataController.preview)
 		.environmentObject(ReviewRequestManager())
 	//		.environment(\.managedObjectContext, preview.viewContext)
@@ -160,6 +154,7 @@ extension DonationsListView {
 			Text("No Donations")
 				.frame(maxWidth: .infinity, alignment: .leading)
 				.font(.largeTitle.bold())
+
 			Text("Track your donations using the 'New Donation' tab.")
 				.frame(maxWidth: .infinity, alignment: .leading)
 				.font(.body)
@@ -193,7 +188,7 @@ extension DonationsListView {
 
 	private var totalCompensation: some View {
 		GroupBox {
-			Text(currencyFormatter.string(from: NSNumber(value: vm.totalEarnedAllTime(donations))) ?? "")
+			Text(NumberFormatter.currency.string(from: NSNumber(value: vm.totalEarnedAllTime(donations))) ?? "")
 				.font(.system(.title, design: .rounded, weight: .bold))
 				.frame(maxWidth: .infinity, alignment: .leading)
 				.padding(.top, 1)
@@ -228,9 +223,11 @@ extension DonationsListView {
 				Symbols.exclamationMarkCircle
 				Text("Filtered by Low Protein")
 			}
-			.padding(.bottom, 20)
+			.padding(.vertical)
 			.foregroundColor(.orange)
 			.font(.headline)
+			.frame(maxWidth: .infinity)
+			.background(.bar)
 		}
 	}
 
@@ -271,6 +268,16 @@ extension DonationsListView {
 				dataController.createSampleData(count: 50)
 			} label: {
 				Label("ADD SAMPLES", systemImage: "flame")
+			}
+#endif
+		}
+
+		ToolbarItem {
+#if DEBUG
+			Button {
+				dataController.deleteAll()
+			} label: {
+				Label("DELETE ALL", systemImage: "trash")
 			}
 #endif
 		}

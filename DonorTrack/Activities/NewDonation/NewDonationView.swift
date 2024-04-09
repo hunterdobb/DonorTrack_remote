@@ -16,7 +16,8 @@ import SwiftUI
  */
 
 struct NewDonationView: View {
-    @ObservedObject var vm: ViewModel
+//    @ObservedObject var vm: ViewModel
+	@StateObject var vm: ViewModel
 
     @FocusState private var focusedField: FocusedField?
     @State private var tmp = Date()
@@ -25,6 +26,11 @@ struct NewDonationView: View {
     enum FocusedField {
         case donationAmount, protein, compensation, notes
     }
+
+	init(dataController: DataController) {
+		let viewModel = ViewModel(dataController: dataController)
+		self._vm = StateObject(wrappedValue: viewModel)
+	}
 
     var body: some View {
         NavigationStack {
@@ -122,7 +128,7 @@ struct NewDonationView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             let preview = DataController.shared
-			NewDonationView(vm: .init(dataController: preview))
+			NewDonationView(dataController: .preview)
                 .environment(\.managedObjectContext, preview.viewContext)
         }
     }

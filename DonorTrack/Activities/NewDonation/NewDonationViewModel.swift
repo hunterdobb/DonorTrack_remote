@@ -84,7 +84,7 @@ extension NewDonationView {
 		var canUndoCycleCount: Bool { cycleCount > 0 }
 
 		// MARK: - Init
-        init(dataController: DataController, donation: DonationEntity? = nil) {
+        init(dataController: DataController) {
             self.dataController = dataController
             self.context = dataController.newContext
             self.donation = DonationEntity(context: self.context)

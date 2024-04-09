@@ -9,7 +9,6 @@ import SwiftUI
 
 struct DonationDetailView: View {
     @ObservedObject var donation: DonationEntity
-//	let provider: DataController
 	@EnvironmentObject var dataController: DataController
 
     @State private var donationToEdit: DonationEntity?
@@ -36,7 +35,6 @@ struct DonationDetailView: View {
 struct DonationDetailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            let previewProvider = DataController.shared
 			DonationDetailView(donation: .example)
 				.environmentObject(DataController.preview)
         }
